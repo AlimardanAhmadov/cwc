@@ -1,0 +1,163 @@
+{% extends 'main/base.html' %}
+{% load humanize %}
+
+
+{% block content %}
+
+<div class="container">
+    <div id="userInfo">
+        <div class="user-profile-section">
+            <div class="user-avatar">
+                <img loading="lazy" src="{{ data.profile_picture }}" alt="user-avatar">
+            </div>
+            <div class="user-info">
+                <h4>{{ data.full_name }}</h4>
+                <span>User Profile</span>
+            </div>
+        </div>
+        <div class="subs-plan">
+            <div class="card">
+                {% if request.user.profile.paid %}
+                <div class="card-header">
+                    Current Subscription Plan
+                </div>
+                <div class="card-body">
+                    <div class="card-item">
+                        <h3>Monthly Plan</h3>
+                    </div>
+
+                    <div class="card-item">
+                        <span>Paid</span>
+                        <span class="small">Status</span>
+                    </div>
+
+                    <div class="card-item">
+                        <span>PayPal</span>
+                        <span class="small">Payment Method</span>
+                    </div>
+
+                    <div class="card-item">
+                        <span>{{ next_due_payment|naturaltime }}</span>
+                        <span class="small">Paid Till</span>
+                    </div>
+                    <div class="subs-actions">
+                        <a href="#change-password" type="button" class="btn menu-block">Change Password</a>
+                        <a type="button" href="#cancel-subscription-modal" class="btn plain-btn">Cancel Subscription</a>
+                    </div>
+                </div>
+                {% else %}
+                <div class="card-header">
+                    Subscription Plan
+                </div>
+                <div class="card-body">
+                    <div class="card-item">
+                        <h3>Monthly Plan</h3>
+                    </div>
+
+                    <div class="card-item">
+                        <span>Not Paid</span>
+                        <span class="small">Status</span>
+                    </div>
+
+                    <div class="card-item">
+                        <span>PayPal</span>
+                        <span class="small">Payment Method</span>
+                    </div>
+
+                    <div class="subs-actions">
+                        <a href="#change-password" type="button" class="btn btn-primary">Change Password</a>
+                        {% include "subscription/checkout.html" %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div> 
+        <div id="change-password" class="modal-window">
+            <div class="border">
+                <a href="#" title="Close" class="modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                    </svg>
+                </a>
+                <h1>Change Password</h1>
+                <form id="changePasswordForm">
+                    <div class="form-block">
+                        <div class="input-group">
+                            <label for="">Old Password</label>
+                            <input type="password" class="form-control" name="old_password" placeholder="Old Password">
+                        </div>
+                    </div>
+                    <div class="form-block">
+                        <div class="input-group"> 
+                            <label for="">New Password</label>
+                            <input type="password" class="form-control" name="password" placeholder="New Password">
+                        </div>
+                    </div>
+                    <div class="form-block">
+                        <div class="input-group"> 
+                            <label for="">Confirm Password</label>
+                            <input type="password" class="form-control" name="password2" placeholder="Confirm Password">
+                        </div>
+                    </div>
+                    <div class="save-changes">
+                        <button type="submit" class="btn menu-block">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="cancel-subscription-modal" class="modal-window">
+            <div class="border">
+                <a href="#" title="Close" class="modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                    </svg>
+                </a>
+                <h1>Cancel Subscription</h1>
+                <div class="confirm-question">
+                    Are you sure you want to cancel your subcription?
+                </div>
+                <div class="save-changes">
+                    <button id="cancelBtn" type="submit" class="btn menu-block">Yes</button>
+                </div>
+            </div>
+        </div>
+        <div class="sign-up-form">
+            <form class="form-column" id="updateProfile">
+                <div class="form-block">
+                    <div class="avatar-upload" style="margin: 0;">
+                        <div class="avatar-edit">
+                            <input type="file" id="imageUpload" accept=".png, .jpg, .jpeg">
+                            <label for="imageUpload"></label>
+                        </div>
+                        <div class="avatar-preview">
+                            <div id="imagePreview" style="background-image: url({{ request.user.profile.profile_picture.url }});">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-block">
+                    <div class="input-group">
+                        <label for="">Full Name</label>
+                        <input type="text" class="form-control" name="full_name" value="{{ data.full_name }}" placeholder="Full Name">
+                    </div>
+                </div>
+
+                <div class="form-block">
+                    <div class="input-group">
+                        <label for="">Email</label>
+                        <input type="email" class="form-control" name="email" value="{{ user.email }}" placeholder="Email">
+                    </div>
+                    <div class="input-group">
+                        <label for="">Phone</label>
+                        <input type="text" class="form-control" name="phone_number" value="{{ data.phone_number }}" placeholder="Phone">
+                    </div>
+                </div>
+            </form>
+        </div> 
+        <div class="save-changes" style="text-align: left;">
+            <button type="submit" form="updateProfile" class="btn menu-block">Save Changes</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

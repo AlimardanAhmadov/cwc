@@ -1,0 +1,16 @@
+{% for coach in results %}
+<article>
+    <a href="{% url 'profile_overview' coach.user.username %}">
+        <img loading="lazy" src="{{ coach.profile_picture.url }}" alt="{{ coach.full_name }}">
+    </a>
+    <a href="{% url 'profile_overview' coach.user.username %}">
+        <div class="text">
+            <h5>{{ coach.full_name }}<div class="coach-rating"><i class="fas fa-star selected" aria-hidden="true"></i> {{ coach.rating }}</div></h5>
+            <ul>
+                <li>{{ coach.category }}</li>
+                <li>{{ coach.available_days }}</li>
+            </ul>
+        </div>
+    </a>
+</article>
+{% endfor %}

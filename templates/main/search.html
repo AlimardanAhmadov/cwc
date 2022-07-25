@@ -1,0 +1,91 @@
+{% extends 'main/base.html' %}
+
+
+{% block content %}
+
+<div class="container">
+    <div id="searchSection">
+        <div class="search-title">
+            <h1>Search <span style="color: #e37946;">Results</span></h1>
+        </div>
+
+        <div class="search-bar">
+            <form>
+                <div class="wrapper">
+                    <div class="search-container">
+                        <div class="input-group">
+                            <input type="text" name="name" class="form-control coach-name" placeholder="Search a coach">
+                        </div>
+                        <div class="input-group" style="width: 550px;">
+                            <div class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                                    <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
+                                    <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                </svg>
+                            </div>
+                            <select class="form-select coach-loc" name="location" aria-label="Default select example">
+                                <option value="" selected>Country</option>
+                                {% for country in countries %}
+                                <option value="{{ country.name }}">{{ country.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="button search-btn">Find Coach</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="scrolling-badges">
+            <button class="btn slider-btn" id="left-slide"><i class="fas fa-chevron-left"></i></button>
+            <div class="list-of-badges">
+                <span class="badge rounded-pill">Soccer</span>
+                <span class="badge rounded-pill">Basketball</span>
+                <span class="badge rounded-pill">Tennis</span>
+                <span class="badge rounded-pill">Golf instructor</span>
+                <span class="badge rounded-pill">Volleyball</span>
+                <span class="badge rounded-pill">Badminton</span>
+                <span class="badge rounded-pill">Swimming</span>
+                <span class="badge rounded-pill">Boxing</span>
+                <span class="badge rounded-pill">Skiing Instructor</span>
+                <span class="badge rounded-pill">Cricket</span>
+                <span class="badge rounded-pill ">Rugby</span>
+                <span class="badge rounded-pill">American Football</span>
+                <span class="badge rounded-pill ">Bowling</span>
+                <span class="badge rounded-pill">Ice Hockey Instructor</span>
+                <span class="badge rounded-pill ">Karate Instructor</span>
+                <span class="badge rounded-pill">Horse Riding Instructor</span>
+                <span class="badge rounded-pill ">Snowboarding Instructor</span>
+                <span class="badge rounded-pill">Camping</span>
+                <span class="badge rounded-pill ">Gymnastic</span>
+                <span class="badge rounded-pill">Personal Trainer</span>
+                <span class="badge rounded-pill ">Judo Instructor</span>
+                <span class="badge rounded-pill">Surfing Instructor</span>
+                <span class="badge rounded-pill ">Kickboxing Instructor</span>
+                <span class="badge rounded-pill">Sky Diving Instructor</span>
+                <span class="badge rounded-pill ">Other</span>
+            </div>
+            <button class="btn slider-btn" id="right-slide"><i class="fas fa-chevron-right"></i></button>
+        </div>
+
+        <main class="grid infinite-container">
+            {% for coach in data %}
+            <article>
+                <a href="{% url 'profile_overview' coach.user.username %}">
+                    <img loading="lazy" src="{{ coach.profile_picture.url }}" alt="{{ coach.full_name }}">
+                </a>
+                <a href="{% url 'profile_overview' coach.user.username %}">
+                    <div class="text">
+                        <h5>{{ coach.full_name }}<div class="coach-rating"><i class="fas fa-star selected" aria-hidden="true"></i> {{ coach.rating }}</div></h5>
+                        <ul>
+                            <li>{{ coach.category }}</li>
+                            <li>{{ coach.available_days }}</li>
+                        </ul>
+                    </div>
+                </a>
+            </article>
+            {% endfor %}
+        </main>
+    </div>
+</div>
+
+{% endblock %}

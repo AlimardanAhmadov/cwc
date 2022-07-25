@@ -1,0 +1,47 @@
+<div class="sign-up-form">
+    <form class="form-column" id="rateForm" data-comment-to="{{ data.user.username }}">
+        <div class="form-block">
+            <div class="input-group">
+                <label for="">Rate</label>
+                <div class="star-rating">
+                    <input id="star-5" type="radio" name="rating" value="5.0" />
+                    <label for="star-5" title="5 stars">
+                      <i class="active fa fa-star" aria-hidden="true"></i>
+                    </label>
+                    <input id="star-4" type="radio" name="rating" value="4.0" />
+                    <label for="star-4" title="4 stars">
+                      <i class="active fa fa-star" aria-hidden="true"></i>
+                    </label>
+                    <input id="star-3" type="radio" name="rating" value="3.0" />
+                    <label for="star-3" title="3 stars">
+                      <i class="active fa fa-star" aria-hidden="true"></i>
+                    </label>
+                    <input id="star-2" type="radio" name="rating" value="2.0" />
+                    <label for="star-2" title="2 stars">
+                      <i class="active fa fa-star" aria-hidden="true"></i>
+                    </label>
+                    <input id="star-1" type="radio" name="rating" value="1.0" />
+                    <label for="star-1" title="1 star">
+                      <i class="active fa fa-star" aria-hidden="true"></i>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-block">
+            <div class="input-group">
+                <label for="">Summary</label>
+                <input type="text" class="form-control" name="review_summary" placeholder="Summary" required="">
+            </div>
+        </div>
+
+        <div class="form-block">
+            <div class="input-group"> 
+                <label for="">Comment</label>
+                <textarea name="review_description" class="form-control" placeholder="type here" id="floatingTextarea2" style="height: 100px" maxlength="500"></textarea> 
+            </div>
+        </div>
+        <div class="form-block">
+            <button class="btn menu-block" type="submit" style="background-color: #e37946;">Post</a>
+        </div>
+    </form>
+</div>

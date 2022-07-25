@@ -1,0 +1,275 @@
+{% extends 'main/base.html' %}
+{% load humanize %}
+
+
+{% block content %}
+
+<div class="container">
+    <div id="userInfo">
+        <div class="user-info-top">
+            <div class="user-profile-section" id="coachProfile">
+                <div class="user-avatar">
+                    <img loading="lazy" src="{{ request.user.coach.profile_picture.url }}" alt="{{ request.user.coach.full_name }}">
+                </div>
+                <div class="user-info" style="display: flex; flex-direction: column;">
+                    <h3>Hi, I'm {{ request.user.coach.full_name }}</h3>
+                    <span class="user-title">Business Coach</span>
+                    <span class="user-sub-info small">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="#e37946" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                        </svg>
+                        {{ request.user.coach.available_days }} | {{ request.user.coach.timing }}
+                    </span>
+                </div>
+            </div>
+            
+            <div class="email-user" style="text-align: left;">
+                <a href="{% url 'edit_profile' %}" type="button" class="btn plain-btn" style="padding: 13px 60px; color: #e37946; border-color: #e37946; font-weight: 600;">
+                    <svg style="margin-right: 5px" xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"></path>
+                    </svg>
+                    Edit Profile
+                </a>
+            </div>
+        </div>
+
+        <div class="subs-plan" style="margin-top: 14px;">
+            <div class="card">
+                {% if request.user.coach.paid %}
+                <div class="card-header">
+                    Current Subscription Plan
+                </div>
+                <div class="card-body">
+                    <div class="card-item">
+                        <h3>Monthly Plan</h3>
+                    </div>
+
+                    <div class="card-item">
+                        <span>Paid</span>
+                        <span class="small">Status</span>
+                    </div>
+
+                    <div class="card-item">
+                        <span>PayPal</span>
+                        <span class="small">Payment Method</span>
+                    </div>
+
+                    <div class="card-item">
+                        <span>{{ next_due_payment|naturaltime }}</span>
+                        <span class="small">Paid Till</span>
+                    </div>
+                    <div class="subs-actions">
+                        <a href="#change-password" type="button" class="btn menu-block">Change Password</a>
+                        <a type="button" href="#cancel-subscription-modal" class="btn plain-btn">Cancel Subscription</a>
+                    </div>
+                </div>
+                {% else %}
+                <div class="card-header">
+                    Subscription Plan
+                </div>
+                <div class="card-body">
+                    <div class="card-item">
+                        <h3>Monthly Plan</h3>
+                    </div>
+
+                    <div class="card-item">
+                        <span>Not Paid</span>
+                        <span class="small">Status</span>
+                    </div>
+
+                    <div class="card-item">
+                        <span>PayPal</span>
+                        <span class="small">Payment Method</span>
+                    </div>
+
+                    <div class="subs-actions">
+                        <a href="#change-password" type="button" class="btn menu-block">Change Password</a>
+                        {% include "subscription/checkout.html" %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div> 
+        <div id="change-password" class="modal-window">
+            <div class="border">
+                <a href="#" title="Close" class="modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                    </svg>
+                </a>
+                <h1>Change Password</h1>
+                <form id="changePasswordForm">
+                    <div class="form-block">
+                        <div class="input-group">
+                            <label for="">Old Password</label>
+                            <input type="password" class="form-control" name="old_password" placeholder="Old Password">
+                        </div>
+                    </div>
+                    <div class="form-block">
+                        <div class="input-group"> 
+                            <label for="">New Password</label>
+                            <input type="password" class="form-control" name="password" placeholder="New Password">
+                        </div>
+                    </div>
+                    <div class="form-block">
+                        <div class="input-group"> 
+                            <label for="">Confirm Password</label>
+                            <input type="password" class="form-control" name="password2" placeholder="Confirm Password">
+                        </div>
+                    </div>
+                    <div class="save-changes">
+                        <button type="submit" class="btn menu-block">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="cancel-subscription-modal" class="modal-window">
+            <div class="border">
+                <a href="#" title="Close" class="modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                    </svg>
+                </a>
+                <h1>Cancel Subscription</h1>
+                <div class="confirm-question">
+                    Are you sure you want to cancel your subcription?
+                </div>
+                <div class="save-changes">
+                    <button id="cancelBtn" type="submit" class="btn menu-block">Yes</button>
+                </div>
+            </div>
+        </div>
+
+        <section style="margin-top: 30px;">
+            <div class="section-title">
+                <div class="section-header">
+                    <h5>Personal Overview</h5>
+                    <!--<a href="" class="small">Edit Overview</a>-->
+                </div>
+                <p class="small">
+                    {{ request.user.coach.about }}
+                </p>
+            </div>
+        </section>
+
+
+        <section>
+            <div class="section-title">
+                <div class="section-header">
+                    <h5>Services</h5>
+                    <a href="#add-service" class="small">Add Service</a>
+                </div>
+
+                <div id="add-service" class="modal-window">
+                    <div class="border">
+                        <a href="#" title="Close" class="modal-close">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                            </svg>
+                        </a>
+                        <h1>Add Service</h1>
+                        <form id="addServiceForm">
+                            <div class="form-block">
+                                <div class="input-group">
+                                    <label for="">Service Title</label>
+                                    <input type="text" class="form-control" name="service_title" id="" placeholder="Service Title" required="">
+                                </div>
+                            </div>
+                            <div class="form-block">
+                                <div class="input-group"> 
+                                    <label for="">Service Description</label>
+                                    <textarea name="service_description" class="form-control" placeholder="type here" id="floatingTextarea2" style="height: 100px" maxlength="100"></textarea> 
+                                </div>
+                            </div>
+                            <div class="save-changes">
+                                <button type="submit" class="btn menu-block">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="services">
+                    {% for service in services %}
+                    <div class="service-item card" data-id="{{ service.pk }}">
+                        <div class="card-body">
+                            <div class="card-body-title">
+                                <span>
+                                    {{ service.service_title }}
+                                </span>
+                                <div class="service-actions">
+                                    <button class="edit-btn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                        </svg>
+                                    </button>
+                                    <button class="remove-btn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="service-description">
+                                {{ service.service_description }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+
+        <section style="margin-top: 10px;">
+            <div class="section-title">
+                <h5>Reviews</h5>
+                <div class="reviews" id="reviewList">
+                    {% for review in reviews %}
+                    <div class="review-item">
+                        <div class="user-profile-section">
+                            <div class="reviewer-avatar">
+                                <img loading="lazy" src="{{ review.reviewer.profile_picture.url }}" alt="user-avatar">
+                            </div>
+                            <div class="user-info" style="display: flex; flex-direction: column;">
+                                <h6>{{ review.reviewer.full_name }}</h6>
+                                <span class="small">{{ review.reviewer.user.username }}</span>
+                            </div>
+                        </div>
+                        <div class="comment-section">
+                            <span class="small">{{ review.review_summary }}</span>
+                            <div class="stars">
+                                {% if review.rating == 5.0 %}
+                                <i class="fas fa-star selected"></i>
+                                <i class="fas fa-star selected"></i>
+                                <i class="fas fa-star selected"></i>
+                                <i class="fas fa-star selected"></i>
+                                <i class="fas fa-star selected"></i>
+                                {% elif review.rating == 4.0 %}
+                                <i class="fas fa-star selected"></i>
+                                <i class="fas fa-star selected"></i>
+                                <i class="fas fa-star selected"></i>
+                                <i class="fas fa-star selected"></i>
+                                {% elif review.rating == 3.0 %}
+                                <i class="fas fa-star selected"></i>
+                                <i class="fas fa-star selected"></i>
+                                <i class="fas fa-star selected"></i> 
+                                {% elif review.rating == 2.0 %}
+                                <i class="fas fa-star selected"></i>
+                                <i class="fas fa-star selected"></i> 
+                                {% elif review.rating == 1.0 %}
+                                <i class="fas fa-star selected"></i>
+                                {% endif %}
+                            </div>
+                            <div class="comment-content small">
+                                {{ review.review_description }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+{% endblock %}

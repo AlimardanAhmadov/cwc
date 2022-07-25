@@ -1,0 +1,128 @@
+{% extends 'main/base.html' %}
+
+
+{% block content %}
+
+<div class="container">
+    <div id="userInfo">
+        <div class="user-info-top" data-username="{{ username }}">
+            <div class="user-profile-section" id="coachProfile">
+                <div class="user-avatar">
+                    <img loading="lazy" src="{{ data.profile_picture }}" alt="{{ data.full_name }}">
+                </div>
+                <div class="user-info" style="display: flex; flex-direction: column;">
+                    <h3>Hi, I'm {{ data.full_name }}</h3>
+                    <span class="user-title">{{ data.category }}</span>
+                    <div class="user-sub-info small">
+                        <svg style="margin-bottom: 3px;" fill="#e37946" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                            <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
+                            <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                        </svg>
+                        <span>
+                            {{ data.address }}
+                        </span>
+                        <span>
+                            {{ data.available_days }} | {{ data.timing }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="email-user" style="text-align: left;">
+                {% if request.user.profile.paid %}
+                <div class="copy-text">
+                    <input type="text" class="text" value="{{ request.user.email }}" />
+                    <button><i class="fa fa-clone"></i></button>
+                </div>
+                {% else %}
+                <button class="paypal-buy-now-button">
+                    <img loading="lazy" src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="PayPal">
+                </button>
+                {% endif %}
+            </div>  
+        </div>
+
+        <section>
+            <div class="section-title">
+                <h5>Personal Overview</h5>
+                <p class="small">
+                    {{ data.about }}
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <div class="section-title">
+                <h5>Services</h5>
+                <div class="services">
+                    {% for service in services %}
+                    <div class="service-item card">
+                        <div class="card-body">
+                            <div class="card-body-title">
+                                {{ service.service_title }}
+                            </div>
+                            <div class="service-description">
+                                {{ service.service_description }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+
+        <section>
+            <div class="section-title">
+                <h5>Reviews</h5>
+                <div class="reviews" id="reviewList">
+                    {% for review in reviews %}
+                    <div class="review-item">
+                        <div class="user-profile-section">
+                            <div class="reviewer-avatar">
+                                <img loading="lazy" src="{{ review.reviewer.profile_picture.url }}" alt="user-avatar">
+                            </div>
+                            <div class="user-info" style="display: flex; flex-direction: column;">
+                                <h6>{{ review.reviewer.full_name }}</h6>
+                                <span class="small">{{ review.reviewer.user.username }}</span>
+                            </div>
+                        </div>
+                        <div class="comment-section">
+                            <span class="small">{{ review.review_summary }}</span>
+                            <div class="stars">
+                                {% if review.rating == 5.0 %}
+                                <i class="fas fa-star selected"></i>
+                                <i class="fas fa-star selected"></i>
+                                <i class="fas fa-star selected"></i>
+                                <i class="fas fa-star selected"></i>
+                                <i class="fas fa-star selected"></i>
+                                {% elif review.rating == 4.0 %}
+                                <i class="fas fa-star selected"></i>
+                                <i class="fas fa-star selected"></i>
+                                <i class="fas fa-star selected"></i>
+                                <i class="fas fa-star selected"></i>
+                                {% elif review.rating == 3.0 %}
+                                <i class="fas fa-star selected"></i>
+                                <i class="fas fa-star selected"></i>
+                                <i class="fas fa-star selected"></i> 
+                                {% elif review.rating == 2.0 %}
+                                <i class="fas fa-star selected"></i>
+                                <i class="fas fa-star selected"></i> 
+                                {% elif review.rating == 1.0 %}
+                                <i class="fas fa-star selected"></i>
+                                {% endif %}
+                            </div>
+                            <div class="comment-content small">
+                                {{ review.review_description }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% include "review/review_form.html" %}
+            </div>
+        </section>
+    </div>
+</div>
+
+{% endblock %}

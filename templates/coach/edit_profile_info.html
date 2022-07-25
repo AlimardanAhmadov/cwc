@@ -1,0 +1,129 @@
+{% extends 'main/base.html' %}
+
+
+
+{% block content %}
+
+<div class="container">
+    <div id="editProfile">
+        <div class="page-title">
+            <h2>Edit Profile</h2>
+        </div>
+        <form class="sign-up-form" id="editCoachInfo">
+            <div class="form-block">
+                <div class="avatar-upload">
+                    <div class="avatar-edit">
+                        <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+                        <label for="imageUpload"></label>
+                    </div>
+                    <div class="avatar-preview">
+                        <div id="imagePreview" style="background-image: url({{ request.user.coach.profile_picture.url }});">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-block">
+                <div class="input-group">
+                    <label for="">Full Name</label>
+                    <input type="text" class="form-control" name="full_name" id="full-name" value="{{ request.user.coach.full_name }}" placeholder="Full Name">
+                </div>
+            </div>
+
+            <div class="form-block">
+                <div class="input-group">
+                    <label for="">Email</label>
+                    <input type="email" class="form-control" name="email" id="email" value="{{ request.user.email }}" placeholder="Email">
+                </div>
+                <div class="input-group">
+                    <label for="">Phone</label>
+                    <input type="text" class="form-control" name="phone_number" id="phone" value="{{ request.user.coach.phone_number }}" placeholder="Phone">
+                </div>
+            </div>
+
+            <div class="form-block">
+                <div class="input-group">
+                    <label for="">Select Category</label>
+                    <select class="form-select" name="category" id="">
+                        <option value="{{ request.user.coach.category }}">{{ request.user.coach.category }}</option>
+                        <option value="Soccer">Soccer</option>
+                        <option value="Basketball">Basketball</option>
+                        <option value="Tennis">Tennis</option>
+                        <option value="Golf instructor">Golf instructor </option>
+                        <option value="Volleyball">Volleyball</option>
+                        <option value="Badminton">Badminton</option>
+                        <option value="Swimming">Swimming</option>
+                        <option value="Badminton">Badminton</option>
+                        <option value="Boxing">Boxing</option>
+                        <option value="Skiing Instructor">Skiing Instructor </option>
+                        <option value="Cricket">Cricket</option>
+                        <option value="Rugby">Rugby</option>
+                        <option value="American Football">American Football </option>
+                        <option value="Bowling">Bowling</option>
+                        <option value="Ice Hockey Instructor">Ice Hockey Instructor </option>
+                        <option value="Karate Instructor">Karate Instructor  </option>
+                        <option value="Horse Riding Instructor">Horse Riding Instructor </option>
+                        <option value="Snowboarding Instructor">Snowboarding Instructor </option>
+                        <option value="Camping">Camping</option>
+                        <option value="Gymnastic">Gymnastic</option>
+                        <option value="Personal Trainer">Personal Trainer</option>
+                        <option value="Judo Instructor">Judo Instructor </option>
+                        <option value="Surfing Instructor">Surfing Instructor </option>
+                        <option value="Kickboxing Instructor">Kickboxing Instructor </option>
+                        <option value="Sky Diving Instructor">Sky Diving Instructor</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-block">
+                <div class="input-group"> 
+                    <label for="">Personal Overview</label>
+                    <textarea class="form-control" name="about" placeholder="type here" id="floatingTextarea2" style="height: 100px" maxlength="100">{{ request.user.coach.about }}</textarea> 
+                </div>
+            </div>
+            <div class="form-block">
+                <input type="hidden" name="list_available_days" value="{{ request.user.coach.available_days }}">
+                <div class="checkbox-group">
+                    <div class="form-check form-check-inline border"> 
+                        <input name="day" class="form-check-input" type="radio" id="inlineRadio1" value="Monday">
+                        <label class="form-check-label" for="inlineCheckbox1">Monday</label>
+                    </div>
+                    <div class="form-check form-check-inline border">
+                        <input name="day" class="form-check-input" type="radio" id="inlineRadio2" value="Tuesday">
+                        <label class="form-check-label" for="inlineCheckbox1">Tuesday</label>
+                    </div>
+                    <div class="form-check form-check-inline border">
+                        <input name="day" class="form-check-input" type="radio" id="inlineRadio3" value="Wednesday">
+                        <label class="form-check-label" for="inlineCheckbox1">Wednesday</label>
+                    </div>
+                    <div class="form-check form-check-inline border">
+                        <input name="day" class="form-check-input" type="radio" id="inlineRadio4" value="Thursday">
+                        <label class="form-check-label" for="inlineCheckbox1">Thursday</label>
+                    </div>
+                    <div class="form-check form-check-inline border">
+                        <input name="day" class="form-check-input" type="radio" id="inlineRadio5" value="Friday">
+                        <label class="form-check-label" for="inlineCheckbox1">Friday</label>
+                    </div>
+                    <div class="form-check form-check-inline border">
+                        <input name="day" class="form-check-input" type="radio" id="inlineRadio6" value="Satuday">
+                        <label class="form-check-label" for="inlineCheckbox1">Satuday</label>
+                    </div>
+                    <div class="form-check form-check-inline border">
+                        <input name="day" class="form-check-input" type="radio" id="inlineRadio7" value="Sunday">
+                        <label class="form-check-label" for="inlineCheckbox1">Sunday</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-block">
+                <div class="input-group">
+                    <label for="">Timing</label>
+                    <input type="text" class="form-control" name="timing" placeholder="From" value="{{ request.user.coach.timing }}">
+                </div>
+            </div>
+            <div class="save-changes">
+                <button type="submit" class="btn menu-block">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

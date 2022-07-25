@@ -1,0 +1,108 @@
+{% extends 'main/base.html' %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="sign-up">
+        <div class="sign-up-header">
+            <h2>Sign up to get access to our Coach Directory</h2>
+        </div>
+        <div class="sign-up-pricing">
+            <p>Directory Starting at <span>$10/Month</span></p>
+        </div>
+        <div class="sign-up-description">
+            <p>The most effective way to promote your coaching business. Thousands of potential <br>
+                clients browse our directory every day.
+            </p>
+        </div>
+    </div>
+    <div class="sign-up-section">
+        <div class="sign-up-form">
+            <form class="form-column" id="signupForm">
+                <div class="form-block">
+                    <div class="input-group">
+                        <label for="">Username</label>
+                        <input type="text" class="form-control" name="username" id="username" placeholder="Username" required>
+                    </div>
+                </div>
+                <div class="form-block">
+                    <div class="input-group">
+                        <label for="">First Name</label>
+                        <input type="text" class="form-control" name="first_name" placeholder="First Name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="">Last Name</label>
+                        <input type="text" class="form-control" name="last_name" placeholder="Last Name" required>
+                    </div>
+                </div>
+
+                <div class="form-block">
+                    <div class="input-group">
+                        <label for="">Email</label>
+                        <input type="email" class="form-control" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="">Phone</label>
+                        <input type="text" class="form-control" name="phone_number" placeholder="Phone" required>
+                    </div>
+                </div>
+
+                <div class="form-block">
+                    <div class="input-group">
+                        <label for="">Password</label>
+                        <input type="password" class="form-control" name="password1" placeholder="Password Password" required>
+                        <div id="divCheckPasswordMatch"></div>
+                    </div>
+                    <div class="input-group">
+                        <label for="">Confirm Password</label>
+                        <input type="password" class="form-control" name="password2" placeholder="Confirm Password" required>
+                        <div id="divCheckPasswordMatch"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="preview-section">
+            <div class="avatar-upload">
+                <div class="avatar-edit">
+                    <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+                    <label for="imageUpload"></label>
+                </div>
+                <div class="avatar-preview">
+                    <div id="imagePreview" style="background-image: url(https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80);">
+                    </div>
+                </div>
+            </div>
+            <div class="subscription-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Subscription plan</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="subs-pricing">
+                            <div>$10</div><span>/month</span>
+                        </div>
+
+                        <div class="subs-desc">
+                            <span class="small">
+                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+                            </span>
+                        </div>
+                        <div class="subs-features">
+                            <ul>
+                                <li><i class="fas fa-check"></i> Lorem ipsum dolor sit amet Lorem ipsum dolor sit</li>
+                                <li><i class="fas fa-check"></i> Lorem insum dolor sit amet easf sit amet easf</li>
+                                <li><i class="fas fa-check"></i> Lorem ipsum dolor sit asit amet ea</li>
+                            </ul>
+                        </div>
+                        <div class="button-group">
+                            <button form="signupForm" type="submit" class="menu-block btn primary-btn" style="background-color: #e37946;">Sign up</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
