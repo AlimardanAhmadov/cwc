@@ -28,7 +28,6 @@ urlpatterns = [
     path('', include('main.urls')),
     path('', include('reviews.urls')),
     path('', include('subscription.urls')),
-    path('account/', include('allauth.urls')),
 
     path('__debug__/', include('debug_toolbar.urls')),
     
