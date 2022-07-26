@@ -307,7 +307,9 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 import django
 from django.utils.encoding import force_str
 from django.utils.translation import gettext_lazy
+from django.utils.six import python_2_unicode_compatible
 django.utils.encoding.force_text = force_str
 django.utils.translation.ugettext_lazy = gettext_lazy
+django.utils.coding.python_2_unicode_compatible = python_2_unicode_compatible
 
 django_heroku.settings(locals())
