@@ -20,11 +20,10 @@ charset-normalizer==2.0.12
 cryptography==37.0.2
 defusedxml==0.7.1
 dj-database-url==0.5.0
-Django==3.2.7
+Django==4.0
 django-allauth==0.51.0
 django-appconf==1.0.5
 django-compressor==4.0
-django-countries==7.3.2
 django-countries-with-calling-codes==0.1.1
 django-debug-toolbar==3.5.0
 django-environ==0.9.0
