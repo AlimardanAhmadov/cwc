@@ -24,6 +24,8 @@ Django==3.2.7
 django-allauth==0.51.0
 django-appconf==1.0.5
 django-compressor==4.0
+django-countries==7.3.2
+django-countries-with-calling-codes==0.1.1
 django-debug-toolbar==3.5.0
 django-environ==0.9.0
 django-flexible-subscriptions==0.15.1
