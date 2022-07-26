@@ -4,22 +4,10 @@ runtime: python
 entrypoint: gunicorn -b :$PORT configs.wsgi # specific to a GUnicorn HTTP server deployment
 env: flex # for Google Cloud Flexible App Engine
 
-# any environment variables you want to pass to your application.
-# accessible through os.environ['VARIABLE_NAME']
-env_variables:
-# the secret key used for the Django app (from PROJECT-DIRECTORY/settings.py)
-SECRET_KEY: 'django-insecure-(2$$ayvtu!u!8h_7e)kdo#a98f2txw&5f+4i6om_+p9m@0r=)c' 
-DEBUG: 'False' # always False for deployment
   
 # everything after /cloudsql/ can be found by entering >> gcloud sql instances describe DATABASE-NAME << in your Terminal
 # the DATABASE-NAME is the name you gave your project's PostgreSQL database
 # the second line from the describe output called connectionName can be copied and pasted after /cloudsql/
-DB_HOST: '/cloudsql/user-management-345613:us-central1:cwc2002db'
-DB_PORT: '5432'
-DB_NAME: 'cwc2022db'
-DB_USER: 'shaun'
-DB_PASSWORD: 'shaun2022dbuser'
-  
 
 beta_settings:
 # from command >> gcloud sql instances describe DATABASE-NAME <<
