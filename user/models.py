@@ -27,7 +27,6 @@ class NotFound:
 
 
 def user_directory_path(instance, filename):
-    # file will be uploaded to MEDIA_ROOT/users/<username>/<filename>
     return "users/{0}/{1}".format(instance.user.username, filename)
 
 

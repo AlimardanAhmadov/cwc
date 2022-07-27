@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'coach',
     'reviews',
     'subscription',
+    'storages', 
 
     'allauth',
     'allauth.account',
@@ -64,7 +65,6 @@ INSTALLED_APPS = [
     'django_countries',
     'subscriptions',
     'debug_toolbar',
-    'storages', 
     'compressor'
 ]
 
@@ -103,16 +103,6 @@ WSGI_APPLICATION = 'configs.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['DB_NAME'],
-        'USER': os.environ['DB_USER'],
-        'PASSWORD': os.environ['DB_PASSWORD'],
-        'HOST': os.environ['DB_HOST'],
-        'PORT': os.environ['DB_PORT'],
-    }
-}
 
 if os.getenv('GAE_APPLICATION', None):
     # Running on production App Engine, so connect to Google Cloud SQL using
@@ -133,7 +123,7 @@ else:
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'HOST': 'localhost',
             'PORT': '5432',
-            'NAME': 'cwc',
+            'NAME': 'cwcdb',
             'USER': 'postgres',
             'PASSWORD': 'bitterpickle_2001',
         }
@@ -195,14 +185,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-STATIC_URL = '/static/'
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -289,9 +271,10 @@ PAYPAL_CLIENT_SECRET = os.environ['PAYPAL_CLIENT_SECRET']
 AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
 AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
 AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
+AWS_CLOUDFRONT_DOMAIN = os.environ['AWS_CLOUDFRONT_DOMAIN']
+AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
 
 AWS_QUERYSTRING_AUTH = False
-
 
 # Your app endpoint
 # AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL')  
@@ -302,7 +285,21 @@ AWS_DEFAULT_ACL='public-read'
 
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+
+MEDIAFILES_LOCATION = ''
+MEDIA_ROOT = '/%s/' % MEDIAFILES_LOCATION
+MEDIA_URL = '//%s/' % (AWS_CLOUDFRONT_DOMAIN)
+
+#DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'configs.storage_backends.MediaStorage'
+
+
+STATICFILES_LOCATION = 'staticfiles'
+STATIC_ROOT = '/%s/' % STATICFILES_LOCATION
+STATIC_URL = '//%s/' % (AWS_CLOUDFRONT_DOMAIN)
+
+STATICFILES_STORAGE = 'configs.storage_backends.StaticStorage'
 
 import django
 from django.utils.encoding import force_str
