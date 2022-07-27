@@ -14,6 +14,17 @@ from pathlib import Path
 from datetime import timedelta
 import os, datetime, environ, django_heroku
 
+
+import django
+from django.utils.encoding import force_str
+from django.utils.translation import gettext_lazy
+from django.utils.six import python_2_unicode_compatible
+
+
+django.utils.encoding.force_text = force_str
+django.utils.translation.ugettext_lazy = gettext_lazy
+django.utils.encoding.python_2_unicode_compatible = python_2_unicode_compatible
+
 env = environ.Env()
 environ.Env.read_env()
 
@@ -30,11 +41,7 @@ SECRET_KEY = 'django-insecure-(2$$ayvtu!u!8h_7e)kdo#a98f2txw&5f+4i6om_+p9m@0r=)c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*', '127.0.0.1', 'https://user-management-345613.uc.r.appspot.com']
-
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
+ALLOWED_HOSTS = ['*', '127.0.0.1',]
 
 # Application definition
 
@@ -64,7 +71,6 @@ INSTALLED_APPS = [
 
     'django_countries',
     'subscriptions',
-    'debug_toolbar',
     'compressor'
 ]
 
@@ -182,26 +188,6 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-
-
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder'
-)
-COMPRESS_ENABLED = True
-COMPRESS_CSS_HASHING_METHOD = "content"
-COMPRESS_CSS_FILTERS = (
-    'compressor.filters.css_default.CssAbsolutefilter',
-    'compressor.filters.cssmin.CSSMinFilte'
-)
-HTML_MINIFY = True
-KEEP_COMMENTS_ON_MINIFYING = True
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'user_directory_path')
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -276,8 +262,6 @@ AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
 
 AWS_QUERYSTRING_AUTH = False
 
-# Your app endpoint
-# AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL')  
 
 # Only public read for now
 AWS_QUERYSTRING_AUTH = False
@@ -286,27 +270,16 @@ AWS_DEFAULT_ACL='public-read'
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 
-
 MEDIAFILES_LOCATION = ''
 MEDIA_ROOT = '/%s/' % MEDIAFILES_LOCATION
 MEDIA_URL = '//%s/' % (AWS_CLOUDFRONT_DOMAIN)
 
-#DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 DEFAULT_FILE_STORAGE = 'configs.storage_backends.MediaStorage'
 
+django_heroku.settings(locals())
 
-STATICFILES_LOCATION = 'staticfiles'
+STATICFILES_LOCATION = 'static'
+STATIC_URL = "//%s/%s/" % (AWS_CLOUDFRONT_DOMAIN, STATICFILES_LOCATION)
 STATIC_ROOT = '/%s/' % STATICFILES_LOCATION
-STATIC_URL = '//%s/%s/' % (AWS_CLOUDFRONT_DOMAIN, STATICFILES_LOCATION)
 
 STATICFILES_STORAGE = 'configs.storage_backends.StaticStorage'
-
-import django
-from django.utils.encoding import force_str
-from django.utils.translation import gettext_lazy
-from django.utils.six import python_2_unicode_compatible
-django.utils.encoding.force_text = force_str
-django.utils.translation.ugettext_lazy = gettext_lazy
-django.utils.encoding.python_2_unicode_compatible = python_2_unicode_compatible
-
-django_heroku.settings(locals())

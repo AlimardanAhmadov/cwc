@@ -1,7 +1,7 @@
 {% load static %}
 {% load countries %}
 {% get_countries as countries %}
-{% load compress %}
+
 
 <html lang="en">
 <head>
@@ -18,16 +18,14 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"/>
 	<link rel='stylesheet' href='https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css'>
 	<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
-	{% compress css %}
 	<link rel="stylesheet" href="{% static 'css/main.css' %}">
 	<link rel="stylesheet" href="{% static 'css/responsive.css' %}">
-	{% endcompress %}
 </head>
 <header class="border-bottom">
 	<div class="container">
 		<nav class="navbar">
 			<a href="{% url 'home' %}" class="brand" id="main-logo">
-				<img loading="lazy" src="/static/img/logo.png" alt="LOGO">
+				<img loading="lazy" src="{% static 'img/logo.png' %}" alt="LOGO">
 			</a>
 			<div class="burger" id="burger">
 				<span class="burger-line"></span>
@@ -37,7 +35,7 @@
 			<span class="overlay"></span>
 			<div class="menu" id="menu">
 				<ul class="menu-inner">
-					<li class="menu-item brand-item"><a href="/" class="brand"><img loading="lazy" src="/static/img/logo.png" alt="LOGO"></a></li>
+					<li class="menu-item brand-item"><a href="/" class="brand"><img loading="lazy" src="{% static 'img/logo.png' %}" alt="LOGO"></a></li>
 					<li class="menu-item"><a class="menu-link" href="{% url 'home' %}">Home</a></li>
 					{% if request.user.is_authenticated %}
 					{% if request.user.profile %}
@@ -56,7 +54,7 @@
 								</svg>
 							</a>
 							<div class="logo-img">
-								<img loading="lazy" src="/static/img/Main-Logo.png" alt="LOGO"></a>
+								<img loading="lazy" src="{% static 'img/Main-Logo.png' %}" alt="LOGO"></a>
 							</div>
 							<h1 style="text-align: center;">Please Login!</h1>
 							<form id="loginForm">
@@ -650,7 +648,7 @@
 				</div>
 				<div class="banner-img">
 					<div class="ellipse-bg">
-						<img loading="lazy" src="/static/img/smiling_girl.png" alt="Smiling Girl">
+						<img loading="lazy" src="{% static 'img/smiling_girl.png' %}" alt="Smiling Girl">
 					</div>
 				</div>
 			</div>
@@ -669,21 +667,21 @@
 
 			<div class="steps">
 				<div class="step-item"> 
-					<img loading="lazy" src="/static/img/Mask Group 1.png" alt="Mask 1"> 
+					<img loading="lazy" src="{% static 'img/icon-3.png' %}" alt="Mask 1"> 
 					<span class="step-title">Find Your Coach</span>
 					<div class="step-description">
 						Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
 					</div>
 				</div>
 				<div class="step-item"> 
-					<img loading="lazy" src="/static/img/Mask 2.png" alt="Mask 2"> 
+					<img loading="lazy" src="{% static 'img/icon-1.png' %}" alt="Mask 2"> 
 					<span class="step-title">Contact Them On Email</span>
 					<div class="step-description">
 						Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
 					</div>
 				</div>
 				<div class="step-item">
-					<img loading="lazy" src="/static/img/Mask 3.png" alt="Mask 3"> 
+					<img loading="lazy" src="{% static 'img/icon-2.png' %}" alt="Mask 3"> 
 					<span class="step-title">Get Your Coaching</span>
 					<div class="step-description">
 						Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
@@ -692,7 +690,7 @@
 			</div>
 			<div id="find-coach-section">
 				<div class="section-left">
-					<img loading="lazy" src="/static/img/pexels-cottonbro-4098274.png" alt="Smiling Woman">
+					<img loading="lazy" src="{% static 'img/pexels-cottonbro-4098274.png' %}" alt="Smiling Woman">
 				</div>
 				<div class="section-right">
 					<div class="section-title">
@@ -722,7 +720,7 @@
 				<div class="gallery-item">
 					<div class="card">
 						<img loading="lazy" class="card-img" src="/static/img/fit_girl.png" alt="Category Image">
-						<img loading="lazy" class="shadowy-img" src="/static/img/card-shadow.png" alt="Shadow">
+						<img loading="lazy" class="shadowy-img" src="{% static 'img/card-shadow.png' %}" alt="Shadow">
 						<div class="card-img-overlay text-white">
 							<h5 class="card-title">Card Title</h5>
 							<p class="card-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna </p>
@@ -733,7 +731,7 @@
 				<div class="gallery-item">
 					<div class="card">
 						<img loading="lazy" class="card-img" src="/static/img/fit_girl.png" alt="Category Image">
-						<img loading="lazy" class="shadowy-img" src="/static/img/card-shadow.png" alt="Shadow">
+						<img loading="lazy" class="shadowy-img" src="{% static 'img/card-shadow.png' %}" alt="Shadow">
 						<div class="card-img-overlay text-white">
 							<h5 class="card-title">Card Title</h5>
 							<p class="card-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna </p>
@@ -744,7 +742,7 @@
 				<div class="gallery-item">
 					<div class="card">
 						<img loading="lazy" class="card-img" src="/static/img/fit_girl.png" alt="Category Image">
-						<img loading="lazy" class="shadowy-img" src="/static/img/card-shadow.png" alt="Shadow">
+						<img loading="lazy" class="shadowy-img" src="{% static 'img/card-shadow.png' %}" alt="Shadow">
 						<div class="card-img-overlay text-white">
 							<h5 class="card-title">Card Title</h5>
 							<p class="card-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna </p>
@@ -755,7 +753,7 @@
 				<div class="gallery-item">
 					<div class="card">
 						<img loading="lazy" class="card-img" src="/static/img/fit_girl.png" alt="Category Image">
-						<img loading="lazy" class="shadowy-img" src="/static/img/card-shadow.png" alt="Shadow">
+						<img loading="lazy" class="shadowy-img" src="{% static 'img/card-shadow.png' %}" alt="Shadow">
 						<div class="card-img-overlay text-white">
 							<h5 class="card-title">Card Title</h5>
 							<p class="card-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna </p>
@@ -766,7 +764,7 @@
 				<div class="gallery-item">
 					<div class="card">
 						<img loading="lazy" class="card-img" src="/static/img/fit_girl.png" alt="Category Image">
-						<img loading="lazy" class="shadowy-img" src="/static/img/card-shadow.png" alt="Shadow">
+						<img loading="lazy" class="shadowy-img" src="{% static 'img/card-shadow.png' %}" alt="Shadow">
 						<div class="card-img-overlay text-white">
 							<h5 class="card-title">Card Title</h5>
 							<p class="card-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna </p>
@@ -777,7 +775,7 @@
 				<div class="gallery-item">
 					<div class="card">
 						<img loading="lazy" class="card-img" src="/static/img/fit_girl.png" alt="Category Image">
-						<img loading="lazy" class="shadowy-img" src="/static/img/card-shadow.png" alt="Shadow">
+						<img loading="lazy" class="shadowy-img" src="{% static 'img/card-shadow.png' %}" alt="Shadow">
 						<div class="card-img-overlay text-white">
 							<h5 class="card-title">Card Title</h5>
 							<p class="card-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna </p>
@@ -788,7 +786,7 @@
 				<div class="gallery-item">
 					<div class="card">
 						<img loading="lazy" class="card-img" src="/static/img/fit_girl.png" alt="Category Image">
-						<img loading="lazy" class="shadowy-img" src="/static/img/card-shadow.png" alt="Shadow">
+						<img loading="lazy" class="shadowy-img" src="{% static 'img/card-shadow.png' %}" alt="Shadow">
 						<div class="card-img-overlay text-white">
 							<h5 class="card-title">Card Title</h5>
 							<p class="card-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna </p>
@@ -864,11 +862,9 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/9d5b946528.js" crossorigin="anonymous"  ></script>
-{% compress js %}
 <script src="{% static 'js/waypoints/jquery.waypoints.min.js' %}"></script>
 <script src="{% static 'js/waypoints/infinite.min.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
-{% endcompress %}
 <script>
 	var infinite = new Waypoint.Infinite({
 		element: $('.infinite-container')[0],
