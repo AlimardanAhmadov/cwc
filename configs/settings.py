@@ -297,7 +297,7 @@ DEFAULT_FILE_STORAGE = 'configs.storage_backends.MediaStorage'
 
 STATICFILES_LOCATION = 'staticfiles'
 STATIC_ROOT = '/%s/' % STATICFILES_LOCATION
-STATIC_URL = '//%s/' % (AWS_CLOUDFRONT_DOMAIN)
+STATIC_URL = '//%s/%s/' % (AWS_CLOUDFRONT_DOMAIN, STATICFILES_LOCATION)
 
 STATICFILES_STORAGE = 'configs.storage_backends.StaticStorage'
 
