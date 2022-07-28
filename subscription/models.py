@@ -14,13 +14,13 @@ class NotFound:
     """ caching """
 
 class CustomSubscriptionPlan(models.Model):
-    selected_subscription_model = models.OneToOneField(SubscriptionPlan, related_name='selected_sub', on_delete=models.CASCADE, blank=True, null=True)
+    #selected_subscription_model = models.OneToOneField(SubscriptionPlan, related_name='selected_sub', on_delete=models.CASCADE, blank=True, null=True)
     active = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     slug_field = models.SlugField(unique=True, blank=True)
     
     def __str__(self):
-        return self.selected_subscription_model.plan_name
+        return self.slug_field
     
     @staticmethod
     def cached_by_pk(pk):

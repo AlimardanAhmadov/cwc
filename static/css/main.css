@@ -1646,3 +1646,8 @@ color: black;
 #loginForm a {
     color: #000;
 }
+
+#loginForm .save-changes {
+    flex-direction: column;
+    gap: 2px;
+}
