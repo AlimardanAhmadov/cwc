@@ -138,7 +138,7 @@ $(document).on('submit', '.verification', function(event){
 	}
 
 	var url = String(document.location.href);
-	let url_username = url.substr(28)
+	let url_username = url.substr(38)
 	console.log(url_username)
   
 	$.post({
