@@ -229,6 +229,9 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Email config
@@ -260,13 +263,11 @@ AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
 
 AWS_QUERYSTRING_AUTH = False
 
-
 # Only public read for now
 AWS_QUERYSTRING_AUTH = False
-AWS_DEFAULT_ACL='public-read'
+#AWS_DEFAULT_ACL='public-read'
 
 AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
 
 MEDIAFILES_LOCATION = ''
 MEDIA_ROOT = '/%s/' % MEDIAFILES_LOCATION

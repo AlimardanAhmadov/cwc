@@ -5,7 +5,7 @@ from storages.backends.s3boto3 import S3Boto3Storage
 
 class StaticStorage(S3Boto3Storage):
     location = settings.STATICFILES_LOCATION
-    default_acl = 'public-read'
+    #default_acl = 'public-read'
 
     def __init__(self, *args, **kwargs):
         kwargs['custom_domain'] = settings.AWS_CLOUDFRONT_DOMAIN
@@ -13,7 +13,7 @@ class StaticStorage(S3Boto3Storage):
 
 class MediaStorage(S3Boto3Storage):
     location = settings.MEDIAFILES_LOCATION
-    default_acl = 'public-read'
+    #default_acl = 'public-read'
 
     def __init__(self, *args, **kwargs):
         kwargs['custom_domain'] = settings.AWS_CLOUDFRONT_DOMAIN

@@ -13,10 +13,8 @@ from rest_framework.generics import (
 )
 import json, re, paypalrestsdk
 
-from subscription.models import CustomSubscriptionPlan
-
 from .serializers import SubscriptionSerializer
-from subscriptions.models import UserSubscription, PlanCost
+from subscriptions.models import UserSubscription, PlanCost, SubscriptionPlan
 
 
 
@@ -34,8 +32,8 @@ class MyHTMLRenderer(TemplateHTMLRenderer):
         return context
 
 def get_subscription_price(request):
-    active_subscription = CustomSubscriptionPlan.objects.filter(active=True)[0]
-    plan_cost = PlanCost.objects.filter(plan=active_subscription.selected_subscription_model)[0]
+    active_subscription = SubscriptionPlan.objects.filter()[:1].get()
+    plan_cost = PlanCost.objects.filter(plan=active_subscription)[:1].get()
     return plan_cost.cost
     
 
@@ -46,16 +44,16 @@ class PurchaseSubscriptionView(ListCreateAPIView):
     serializer_class = SubscriptionSerializer
 
     def get(self, request, format=None):
-        selected_subscription = CustomSubscriptionPlan.objects.filter(active=True)[0]
-        serializer = SubscriptionSerializer(selected_subscription.selected_subscription_model, context={'request': request})
+        selected_subscription = SubscriptionPlan.objects.filter()[:1].get()
+        serializer = SubscriptionSerializer(selected_subscription, data=request.data, context={'request': request})
         return Response(serializer.data)
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
         with transaction.atomic():
             try:
-                active_subscription = CustomSubscriptionPlan.objects.filter(active=True)[0]
-                serializer = SubscriptionSerializer(active_subscription.selected_subscription_model, data=request.data, context={'request': request})
+                active_subscription = SubscriptionPlan.objects.filter()[:1].get()
+                serializer = SubscriptionSerializer(active_subscription, data=request.data, context={'request': request})
                 
                 if serializer.is_valid():
                     cost = int(get_subscription_price(request).normalize())
@@ -92,6 +90,7 @@ class PurchaseSubscriptionView(ListCreateAPIView):
                                 return JsonResponse({'redirect_value': approval_url})
                                 # return HttpResponseRedirect(approval_url)
                     else:
+                        transaction.set_rollback(True)
                         print(billing_plan.error)
                         
                 else:
@@ -112,7 +111,7 @@ class PurchaseSubscriptionView(ListCreateAPIView):
             except Exception as exc:
                 print(exc)
                 transaction.set_rollback(True)
-                response = HttpResponse(json.dumps({'err': data}),
+                response = HttpResponse(json.dumps({'err': "Something went wrong"}),
                         content_type='application/json')
                 response.status_code = 400
                 return response
@@ -124,8 +123,8 @@ def execute(request):
     if payment.execute({'payer_id':request.GET.get("PayerID")}):
         print('Execute success!')
         current_user = request.user
-        active_subscription = CustomSubscriptionPlan.objects.filter(active=True)[0]
-        active_plan_cost = PlanCost.objects.filter(plan=active_subscription.selected_subscription_model)[0]
+        active_subscription = SubscriptionPlan.objects.filter()[:1].get()
+        active_plan_cost = PlanCost.objects.filter(plan=active_subscription)[:1].get()
 
         user_subs = UserSubscription.objects.create(
             subscription=active_plan_cost,

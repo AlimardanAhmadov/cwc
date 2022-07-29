@@ -1,8 +1,6 @@
 from django.contrib import admin
 from subscriptions.models import PlanCost, UserSubscription, SubscriptionTransaction, PlanListDetail, SubscriptionPlan
 
-from .models import CustomSubscriptionPlan
-
 
 class SubscriptionInline(admin.StackedInline):
     model = PlanCost
@@ -16,4 +14,3 @@ admin.site.register(SubscriptionPlan, SubscriptionAdmin)
 admin.site.register(UserSubscription)
 admin.site.register(SubscriptionTransaction)
 admin.site.register(PlanListDetail)
-admin.site.register(CustomSubscriptionPlan)
