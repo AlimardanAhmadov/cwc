@@ -138,7 +138,7 @@ $(document).on('submit', '.verification', function(event){
 	}
 
 	var url = String(document.location.href);
-	let url_username = url.substr(33)
+	let url_username = url.substr(28)
   
 	$.post({
 		type: 'POST',
@@ -213,7 +213,7 @@ $(document).on('click', ".list-of-badges .badge", function(event){
 $(document).on('submit', '#coachForm', function(event){
 	event.preventDefault();
 	$('#coachForm .menu-block').html('<div class="loader"></div>');
-	
+
 	var titles = $('input[name=day]:checked').map(function(idx, elem) {
 		return $(elem).val();
 	}).get();
