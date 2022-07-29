@@ -213,6 +213,7 @@ $(document).on('click', ".list-of-badges .badge", function(event){
 $(document).on('submit', '#coachForm', function(event){
 	event.preventDefault();
 	$('#coachForm .menu-block').html('<div class="loader"></div>');
+	
 	var titles = $('input[name=day]:checked').map(function(idx, elem) {
 		return $(elem).val();
 	}).get();
