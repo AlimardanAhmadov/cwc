@@ -85,6 +85,7 @@ class RegisterCoachAPIView(ListCreateAPIView):
                 response = HttpResponse(json.dumps({'err': data}), 
                         content_type='application/json')
                 response.status_code = 400
+                return response
 
     def perform_create(self, serializer):
         user = serializer.save(self.request)
