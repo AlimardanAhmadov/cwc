@@ -139,6 +139,7 @@ $(document).on('submit', '.verification', function(event){
 
 	var url = String(document.location.href);
 	let url_username = url.substr(28)
+	console.log(url_username)
   
 	$.post({
 		type: 'POST',
