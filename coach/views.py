@@ -68,9 +68,10 @@ class RegisterCoachAPIView(ListCreateAPIView):
                 else:
                     data = []
                     emessage=serializer.errors
+                    print(emessage)
                     for key in emessage:
                         err_message = str(emessage[key]) 
-                        err_string = re.search("string='(.*)', code", err_message) 
+                        err_string = re.search("string='(.*)', code", err_message)
                         message_value = err_string.group(1)
                         final_message = f"{key} - {message_value}"
                         data.append(final_message)
@@ -82,7 +83,7 @@ class RegisterCoachAPIView(ListCreateAPIView):
             except Exception as exc:
                 print(exc)
                 transaction.set_rollback(True)
-                response = HttpResponse(json.dumps({'err': "Something went wrong"}), 
+                response = HttpResponse(json.dumps("Something went wrong"), 
                         content_type='application/json')
                 response.status_code = 400
                 return response
