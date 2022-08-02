@@ -112,9 +112,12 @@ WSGI_APPLICATION = 'configs.wsgi.application'
 
 CELERY_RESULT_BACKEND = "django-db"
 
-BROKER_URL = 'redis://localhost:6379/0'
-BACKEND_URL = 'redis://localhost:6379/1'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+#BROKER_URL = 'redis://localhost:6379/0'
+BROKER_URL = os.environ['REDIS_URL']
+#BACKEND_URL = 'redis://localhost:6379/1'
+BACKEND_URL = os.environ['REDIS_URL']
+#CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'djang-db'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -293,15 +296,15 @@ django_heroku.settings(locals())
 djcelery.setup_loader()
 
 STATICFILES_LOCATION = 'static'
-#STATIC_URL = "//%s/%s/" % (AWS_CLOUDFRONT_DOMAIN, STATICFILES_LOCATION)
-#STATIC_ROOT = '/%s/' % STATICFILES_LOCATION
+STATIC_URL = "//%s/%s/" % (AWS_CLOUDFRONT_DOMAIN, STATICFILES_LOCATION)
+STATIC_ROOT = '/%s/' % STATICFILES_LOCATION
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+"""STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
-]
+]"""
 
-#STATICFILES_STORAGE = 'configs.storage_backends.StaticStorage'
+STATICFILES_STORAGE = 'configs.storage_backends.StaticStorage'
