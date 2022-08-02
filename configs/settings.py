@@ -115,6 +115,7 @@ CELERY_RESULT_BACKEND = "django-db"
 #BROKER_URL = 'redis://localhost:6379/0'
 BROKER_URL = os.environ['REDIS_URL']
 #BACKEND_URL = 'redis://localhost:6379/1'
+BACKEND_URL = os.environ['REDIS_URL']
 #CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = os.environ['REDIS_URL']
 CELERY_ACCEPT_CONTENT = ['application/json']
