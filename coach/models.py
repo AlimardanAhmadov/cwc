@@ -98,7 +98,7 @@ class Coach(TimeStampedModel):
                 return None
             return coaches
 
-        coaches = Coach.objects.all()
+        coaches = Coach.objects.filter(paid=True)
 
         if not coaches:
             cache.set(key, NotFound(), CACHED_COACH_LENGTH)

@@ -77,7 +77,7 @@ def search_coaches(request, q=None, location=None, category=None):
         if matching_coaches:
             "Calling cach"
         else:
-            matching_coaches = Coach.objects.select_related("user").all()
+            matching_coaches = Coach.objects.select_related("user").filter(paid=True)
         paginator = Paginator(matching_coaches, 25)
         
         try:

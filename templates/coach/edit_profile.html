@@ -189,6 +189,7 @@
                     </div>
                 </div>
                 <div class="services">
+                    {% if services %}
                     {% for service in services %}
                     <div class="service-item card" data-id="{{ service.pk }}">
                         <div class="card-body">
@@ -215,6 +216,9 @@
                         </div>
                     </div>
                     {% endfor %}
+                    {% else %}
+                    <span>No services found.</span>
+                    {% endif %}
                 </div>
             </div>
         </section>
@@ -224,6 +228,7 @@
             <div class="section-title">
                 <h5>Reviews</h5>
                 <div class="reviews" id="reviewList">
+                    {% if reviews %}
                     {% for review in reviews %}
                     <div class="review-item">
                         <div class="user-profile-section">
@@ -266,6 +271,10 @@
                         </div>
                     </div>
                     {% endfor %}
+                    {% else %}
+
+                    <span>No reviews found.</span>
+                    {% endif %}
                 </div>
             </div>
         </section>

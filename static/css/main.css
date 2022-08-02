@@ -1552,6 +1552,8 @@ color: black;
 .gallery-item .card {
     border: none;
     text-align: left;
+    width: 375px;
+    height: 466px;
 }
 
 @supports (display: grid) {
@@ -1578,7 +1580,8 @@ color: black;
 
 .shadowy-img {
     position: absolute;
-    bottom: -74px;
+    /*bottom: -74px;*/
+    bottom: 0;
     left: 0;
     right: 0;
 }
@@ -1651,4 +1654,9 @@ color: black;
     display: flex;
     flex-direction: column;
     gap: 2px;
+}
+
+.cta-section .menu-block:hover {
+    border-color: #fff;
+    color: #fff;
 }
