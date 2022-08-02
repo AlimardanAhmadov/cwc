@@ -73,7 +73,7 @@ $(document).on('submit', '#signupForm', function(event){
 
 	console.log(email)
 
-	$('#signupForm .menu-block').html('<div class="loader"></div>');
+	$('#signupForm .menu-block').html('<div class="loader"></div>').prop('disabled', true);;
   
 	$.ajax({
 		type: 'POST',
@@ -82,11 +82,11 @@ $(document).on('submit', '#signupForm', function(event){
 		dataType: 'json',
 		headers: { 'X-CSRFTOKEN': csrftoken, "Content-type": "application/json"  },
 		success: function (data) {
-			$('#signupForm .menu-block').html('Sign Up');
+			$('#signupForm .menu-block').html('Sign Up').prop('disabled', false);;
 			window.location.href = "/verify-sms/" + input_data['username'];
 		},
         error: function (xhr, ajaxOptions, thrownError) {
-			$('#signupForm .menu-block').html('Sign Up');
+			$('#signupForm .menu-block').html('Sign Up').prop('disabled', false);;
 			window.location.href = "#";
 			var list_of_errors = xhr.responseJSON['error']
 			if ($('.msg-danger').length > 0) {
@@ -215,7 +215,7 @@ $(document).on('click', ".list-of-badges .badge", function(event){
 
 $(document).on('submit', '#coachForm', function(event){
 	event.preventDefault();
-	$('#coachForm .menu-block').html('<div class="loader"></div>');
+	$('#coachForm .menu-block').html('<div class="loader"></div>').prop('disabled', true);;
 
 	var titles = $('input[name=day]:checked').map(function(idx, elem) {
 		return $(elem).val();
@@ -247,11 +247,11 @@ $(document).on('submit', '#coachForm', function(event){
 		dataType: 'json',
 		headers: { 'X-CSRFTOKEN': csrftoken, "Content-type": "application/json"  },
 		success: function (data) {
-			$('#coachForm .menu-block').html('Sign Up');
+			$('#coachForm .menu-block').html('Sign Up').prop('disabled', false);;
 			window.location.href = "/verify-sms/" + input_data['username'];
 		},
         error: function (xhr, ajaxOptions, thrownError) {
-			$('#coachForm .menu-block').html('Sign Up');
+			$('#coachForm .menu-block').html('Sign Up').prop('disabled', false);;
 			window.location.href = "#";
 			var list_of_errors = xhr.responseJSON['err']
 			if ($('.msg-danger').length > 0) {
@@ -283,10 +283,10 @@ const coaches_div = $('.infinite-container');
 const endpoint = '/search-coaches/';   
 
 let ajax_call = function (endpoint, request_parameters) {
-	$('.search-btn').html('<div class="loader"></div>');
+	$('.search-btn').html('<div class="loader"></div>').prop('disabled', true);;
   	$.getJSON(endpoint, request_parameters)
     .done(response => {  
-		$('.search-btn').html('Find Coach');
+		$('.search-btn').html('Find Coach').prop('disabled', false);;
 		if ($('#main').length == 1) {
 			$('#main').css({'margin-top': '0', 'margin-bottom': '40px'})
 			$('#main').html('<div class="grid infinite-container">' + response['html_from_view'] + '</div>');
@@ -417,7 +417,7 @@ $(document).on('submit', '#updateProfile', function(event){
 		'phone_number': $('input[name="phone_number"]').val(), 
 		'image_url': bg
 	} 
-	$('.save-changes button').html('<div class="loader"></div>');
+	$('.save-changes button').html('<div class="loader"></div>').prop('disabled', true);;
 	$.ajax({
 		type: 'POST',
 		url: '/update-profile/',
@@ -425,11 +425,11 @@ $(document).on('submit', '#updateProfile', function(event){
 		dataType: 'json',
 		headers: { 'X-CSRFTOKEN': csrftoken, "Content-type": "application/json"  },
 		success: function () {
-			$('.save-changes button').html('Save Changes');
+			$('.save-changes button').html('Save Changes').prop('disabled', false);;
 		},
         error: function (xhr, ajaxOptions, thrownError) {
 			var list_of_errors = xhr.responseJSON['err']
-			$('.save-changes button').html('Save Changes');
+			$('.save-changes button').html('Save Changes').prop('disabled', false);;
 			if ($('.msg-danger').length > 0) {
 				$('.msg-danger').remove();
 				$('<div class="xd-message msg-danger"><div class="xd-message-icon"><i class="ion-close-round"></i></div><div class="xd-message-content"><ul id="listError">'
@@ -474,7 +474,7 @@ $(document).on('submit', '#editCoachInfo', function(event){
 		'timing': $('input[name="timing"]').val(),
 		'image_url': bg
 	};
-	$('#editCoachInfo .menu-block').html('<div class="loader"></div>');
+	$('#editCoachInfo .menu-block').html('<div class="loader"></div>').prop('disabled', true);;
 	$.ajax({
 		type: 'POST',
 		url: '/edit-profile/',
@@ -482,10 +482,10 @@ $(document).on('submit', '#editCoachInfo', function(event){
 		dataType: 'json',
 		headers: { 'X-CSRFTOKEN': csrftoken, "Content-type": "application/json"  },
 		success: function () {
-			$('#editCoachInfo .menu-block').html('Save Changes');
+			$('#editCoachInfo .menu-block').html('Save Changes').prop('disabled', false);;
 		},
         error: function (xhr, ajaxOptions, thrownError) {
-			$('#editCoachInfo .menu-block').html('Save Changes');
+			$('#editCoachInfo .menu-block').html('Save Changes').prop('disabled', false);;
 			var list_of_errors = xhr.responseJSON['err'];
 			window.scrollTo(0, 0);
 			if ($('.msg-danger').length > 0) {
@@ -640,7 +640,7 @@ $(document).on('click', '.paypal-buy-now-button', function(event){
 $(document).on('click', '#cancelBtn', function(event){
 	event.preventDefault();
 	var $this_btn = $(this);
-	$this_btn.html('<div class="loader"></div>')
+	$this_btn.html('<div class="loader"></div>').prop('disabled', true);
 	$.ajax({
 		type: 'POST',
 		url: '/cancel-subscription',
@@ -667,13 +667,14 @@ $(document).on('submit', '#changePasswordForm', function(event){
 		'password': $('input[name="password"]').val(), 
 		'password2': $('input[name="password2"]').val(), 
 	}
-	$('#changePasswordForm button').html('<div class="loader"></div>')
+	$('#changePasswordForm button').html('<div class="loader"></div>').prop('disabled', true);
+
 	$.ajax({
 		type: 'POST',
 		url: '/change-password',
 		data: JSON.stringify(input_data),
 		dataType: 'json',
-		headers: { 'X-CSRFTOKEN': csrftoken, "Content-type": "application/json"  },
+		headers: { 'X-CSRFTOKEN': csrstoken, "Content-type": "application/json"  },
 		success: function () {
 			window.location.href = "#";
 		},
@@ -710,7 +711,7 @@ $(document).on('submit', '#loginForm', function(event){
 		'password': $('input[name="password"]').val(),
 	}
 
-	$('#loginForm .menu-block').html('<div class="loader"></div>');
+	$('#loginForm .menu-block').html('<div class="loader"></div>').prop('disabled', true);
   
 	$.ajax({
 		type: 'POST',
@@ -719,7 +720,7 @@ $(document).on('submit', '#loginForm', function(event){
 		dataType: 'json',
 		headers: { 'X-CSRFTOKEN': csrftoken, "Content-type": "application/json"  },
 		success: function (data) {
-			$('#loginForm .menu-block').html('Login');
+			$('#loginForm .menu-block').html('Login').prop('disabled', false);;
 			const nextURL = String( document.location.href ).replace( "#login-modal", "" );
 			const nextTitle = 'My new page title';
 			const nextState = { additionalInformation: 'Updated the URL with JS' };
@@ -727,7 +728,7 @@ $(document).on('submit', '#loginForm', function(event){
 			location.reload();
 		},
         error: function (xhr, ajaxOptions, thrownError) {
-			$('#loginForm .menu-block').html('Login');
+			$('#loginForm .menu-block').html('Login').prop('disabled', false);
 			
 			var list_of_errors = xhr.responseJSON['error']
 			if ($('.msg-danger').length > 0) {
@@ -769,7 +770,7 @@ $(document).on('submit', '#resetsendForm', function(event){
 		'email': $('input[name="email"]').val(), 
 	}
 	console.log(input_data)
-	$('#resetsendForm button').html('<div class="loader"></div>')
+	$('#resetsendForm button').html('<div class="loader"></div>').prop('disabled', true);
 	$.ajax({
 		type: 'POST',
 		url: '/reset/password/',
@@ -777,14 +778,14 @@ $(document).on('submit', '#resetsendForm', function(event){
 		dataType: 'json',
 		headers: { 'X-CSRFTOKEN': csrftoken, "Content-type": "application/json"  },
 		success: function () {
-			$('#resetsendForm button').html('Submit');
+			$('#resetsendForm button').html('Submit').prop('disabled', false);
 			$('input[name="email"]').val('');
 			$('<span>Password reset e-mail has been sent! Please check your inbox</span>').insertBefore('#resetsendForm');
 			$('#resetsendForm .form-block, #resetsendForm .menu-block').remove();
 		},
         error: function (xhr, ajaxOptions, thrownError) {
 			var list_of_errors = xhr.responseJSON['err']
-			$('#resetsendForm button').html('Submit')
+			$('#resetsendForm button').html('Submit').prop('disabled', false);
 			if ($('.msg-danger').length > 0) {
 				$('.msg-danger').remove();
 				$('<div class="xd-message msg-danger"><div class="xd-message-icon"><i class="ion-close-round"></i></div><div class="xd-message-content"><ul id="listError">'
@@ -818,7 +819,7 @@ $(document).on('submit', '#confirmResetForm', function(event){
 		'uid':url.substring(24, 26),
 		'token':url.substring(27, 66),
 	}
-	$('#confirmResetForm button').html('<div class="loader"></div>');
+	$('#confirmResetForm button').html('<div class="loader"></div>').prop('disabled', true);
 	$.ajax({
 		type: 'POST',
 		url: url,
@@ -827,12 +828,12 @@ $(document).on('submit', '#confirmResetForm', function(event){
 		headers: { 'X-CSRFTOKEN': csrftoken, "Content-type": "application/json"  },
 		success: function () {
 			window.location.href = "/";
-			$('#confirmResetForm button').html('Save');
+			$('#confirmResetForm button').html('Save').prop('disabled', false);
 			$('input[name="email"]').val('');
 		},
         error: function (xhr, ajaxOptions, thrownError) {
 			var list_of_errors = xhr.responseJSON['err']
-			$('#confirmResetForm button').html('Submit')
+			$('#confirmResetForm button').html('Submit').prop('disabled', false);
 			if ($('.msg-danger').length > 0) {
 				$('.msg-danger').remove();
 				$('<div class="xd-message msg-danger"><div class="xd-message-icon"><i class="ion-close-round"></i></div><div class="xd-message-content"><ul id="listError">'

@@ -34,11 +34,6 @@ ul {
     width: 115px;
     height: auto;
 }
-
-.menu-block {
-    z-index: 1;
-}
-
 body.modal-open {
     overflow: hidden;
 }
@@ -205,6 +200,7 @@ background-color: #e37946;
 border-color: #e37946;
 transition: all 0.3s ease-in-out;
 padding: 14px 27px;
+z-index: 1;
 }
 .navbar:nth-child(4) {
     margin-left: 1.5rem !important;
