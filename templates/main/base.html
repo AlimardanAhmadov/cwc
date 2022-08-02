@@ -60,7 +60,7 @@
 							<form id="loginForm">
 								<div class="form-block">
 									<div class="input-group">
-										<label for="">Email or Username</label>
+										<label for="">Username</label>
 										<input type="text" class="form-control" name="username" placeholder="Type here">
 									</div>
 								</div>
@@ -73,7 +73,33 @@
 								<div class="save-changes">
 									<button type="submit" class="btn menu-block">Login</button>
 									<span class="small">Don't have an account? <a href="{% url 'signup' %}">Sign up now</a></span> 
-									<span class="small"><a href="">Forgot your password?</a></span> 
+									<span class="small"><a href="#reset-modal">Forgot your password?</a></span> 
+								</div>
+							</form>
+						</div>
+					</div>
+					<div id="reset-modal" class="modal-window">
+						<div class="border">
+							<a href="#" title="Close" class="modal-close">
+								<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+									<path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+								</svg>
+							</a>
+							<div class="logo-img">
+								<img loading="lazy" src="{% static 'img/Main-Logo.png' %}" alt="LOGO"></a>
+							</div>
+							<h1 style="text-align: center;">Reset Password</h1>
+							<form id="resetsendForm">
+								<div class="form-block">
+									<div class="input-group">
+										<label for="">Email</label>
+										<input type="text" class="form-control" name="email" placeholder="Type here">
+									</div>
+								</div>
+								<div class="save-changes">
+									<button type="submit" class="btn menu-block">Submit</button>
+									<span class="small">Don't have an account? <a href="{% url 'signup' %}">Sign up now</a></span> 
+									<span class="small"><a href="#login-modal">Back to login</a></span> 
 								</div>
 							</form>
 						</div>

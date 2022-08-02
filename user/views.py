@@ -35,6 +35,7 @@ from reviews.models import Review
 from .models import Profile, SMSVerification
 from .serializers import (
     ProfileSerializer,
+    SendResetPasswordSerializer,
     UserSerializer,
     SMSPinSerializer,
     CustomRegisterSerializer,
@@ -46,7 +47,6 @@ from .send_mail import send_reset_password_email
 from django.contrib.auth import get_user_model
 
 from subscriptions.models import UserSubscription
-
 
 
 User = get_user_model()
@@ -234,7 +234,8 @@ class VerifySMSView(APIView):
                         content_type='application/json')
                     response.status_code = 400
                     return response
-            except Exception:
+            except Exception as e:
+                print(e)
                 transaction.set_rollback(True)
                 response = HttpResponse(json.dumps({'err': "Code is not acceptable"}),
                     content_type='application/json')
@@ -242,34 +243,85 @@ class VerifySMSView(APIView):
                 return response
 
 
-class PasswordResetView(APIView):
+class PasswordResetView(ListCreateAPIView):
+    permission_classes = (permissions.AllowAny,)
+    allowed_methods = ("POST", "OPTIONS", "HEAD", "GET")
+    serializer_class = SendResetPasswordSerializer
+
+
+    def get_serializer(self, *args, **kwargs):
+        return SendResetPasswordSerializer(*args, **kwargs)
+
+    def get(self, request):
+        serializer = SendResetPasswordSerializer(context={"request": request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            email = request.data.get("email", None)
+            
+            try:
+                user = User.objects.get(email=email)
+                send_reset_password_email.delay(user.pk)
+            except User.DoesNotExist:
+                response = HttpResponse(json.dumps({'err': ['Please enter a valid email']}), 
+                    content_type='application/json')
+                response.status_code = 400
+                return response
+            return Response(
+                {"detail": _("Password reset e-mail has been sent.")},
+                status=status.HTTP_200_OK,
+            )
+        else:
+            response = HttpResponse(json.dumps({'err': ['Something went wrong']}), 
+                        content_type='application/json')
+            response.status_code = 400
+            return response
 
-        email = request.data.get("email", None)
-        try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            raise NotAcceptable(_("Please enter a valid email."))
-        send_reset_password_email.delay(user)
-        return Response(
-            {"detail": _("Password reset e-mail has been sent.")},
-            status=status.HTTP_200_OK,
-        )
 
-
-class PasswordResetConfirmView(GenericAPIView):
+class PasswordResetConfirmView(ListCreateAPIView):
+    renderer_classes = [MyHTMLRenderer,]
+    template_name = "user/reset_password_confirm.html"
     permission_classes = (permissions.AllowAny,)
     serializer_class = PasswordResetConfirmSerializer
 
     @sensitive_post_parameters_m
     def dispatch(self, *args, **kwargs):
         return super(PasswordResetConfirmView, self).dispatch(*args, **kwargs)
+    
+    def get(self, request, *args, **kwargs):
+        serializer = PasswordResetConfirmSerializer(context={"request": request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def get_serializer(self, *args, **kwargs):
+        return PasswordResetConfirmSerializer(*args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({"detail": _("Password has been reset with the new password.")})
+        if serializer.is_valid():
+            try:
+                serializer.save()
+            except User.DoesNotExist:
+                response = HttpResponse(json.dumps({'err': ['Something went wrong!']}), 
+                    content_type='application/json')
+                response.status_code = 400
+                return response
+            return JsonResponse({'data':serializer.data, 'status':status.HTTP_200_OK})
+        else:
+            data = []
+            emessage=serializer.errors 
+            print(emessage)
+            for key in emessage:
+                err_message = str(emessage[key])
+                err_string = re.search("string='(.*)', ", err_message) 
+                message_value = err_string.group(1)
+                final_message = f"{key} - {message_value}"
+                data.append(final_message)
+            response = HttpResponse(json.dumps({'err': data}), 
+                content_type='application/json')
+            response.status_code = 400
+            return response
 
 
 class UserProfileAPIView(APIView):

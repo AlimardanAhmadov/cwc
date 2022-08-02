@@ -1,18 +1,12 @@
 from django.db import models
-from django.dispatch import receiver
-from django.db.models.signals import post_save
-from subscriptions.models import SubscriptionPlan
+from django.contrib.auth import get_user_model
 
-from datetime import datetime, timedelta
+User = get_user_model()
 
+class Payment(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='payment')
+    order_id = models.CharField(max_length=250)
+    created = models.DateTimeField(auto_now_add=True)
 
-@receiver(post_save, sender=SubscriptionPlan)
-def get_next_billing(sender, instance, *args, **kwargs):
-    created = kwargs.get('created')
-    if created:
-        try:
-            instance.date_billing_next = datetime.today() + timedelta(days=30)
-            instance.date_billing_next = datetime.today() + timedelta(days=30)
-            instance.save()
-        except Exception as exc:
-            print(exc)
+    def __str__(self):
+        return self.order_id

@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
-import os, datetime, environ, django_heroku
+import os, datetime, environ, django_heroku, djcelery
 
 
 import django
@@ -41,7 +41,7 @@ SECRET_KEY = 'django-insecure-(2$$ayvtu!u!8h_7e)kdo#a98f2txw&5f+4i6om_+p9m@0r=)c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*', '127.0.0.1',]
+ALLOWED_HOSTS = ['*', 'https://8a94-212-47-139-63.eu.ngrok.io']
 
 # Application definition
 
@@ -71,7 +71,11 @@ INSTALLED_APPS = [
 
     'django_countries',
     'subscriptions',
-    'compressor'
+    'compressor',
+
+    'celery',
+    'django_celery_beat',
+    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -106,6 +110,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'configs.wsgi.application'
 
+CELERY_RESULT_BACKEND = "django-db"
+
+BROKER_URL = 'redis://localhost:6379/0'
+BACKEND_URL = 'redis://localhost:6379/1'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Baku' 
+
+
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -127,7 +142,7 @@ else:
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'HOST': 'localhost',
             'PORT': '5432',
-            'NAME': 'cwcdb',
+            'NAME': 'localdb',
             'USER': 'postgres',
             'PASSWORD': 'bitterpickle_2001',
         }
@@ -168,9 +183,6 @@ REST_FRAMEWORK = {
     ],
     "EXCEPTION_HANDLER": "user.utils.api_exception_handler",
 }
-
-BROKER_URL = 'redis://localhost:6379/0'
-BACKEND_URL = 'redis://localhost:6379/1'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -232,14 +244,15 @@ AUTHENTICATION_BACKENDS = (
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+SENDGRID_API_KEY = os.environ['SENDGRID_API_KEY']
 
-# Email config
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = "eelimerdan752@gmail.com"
-EMAIL_HOST_PASSWORD = "apple_2001"
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+DEFAULT_FROM_EMAIL = 'eelimerdan752@gmail.com'
 
 TWILIO_ACCOUNT_SID = os.environ['TWILIO_ACCOUNT_SID']
 TWILIO_AUTH_TOKEN = os.environ['TWILIO_AUTH_TOKEN']
@@ -252,6 +265,7 @@ DFS_CURRENCY_LOCALE = 'en_us'
 
 PAYPAL_CLIENT_ID = os.environ['PAYPAL_CLIENT_ID']
 PAYPAL_CLIENT_SECRET = os.environ['PAYPAL_CLIENT_SECRET']
+PAYPAL_RECEIVER_EMAIL = os.environ['PAYPAL_RECEIVER_EMAIL']
 
 
 # AWS S3 Configuration
@@ -276,9 +290,18 @@ MEDIA_URL = '//%s/' % (AWS_CLOUDFRONT_DOMAIN)
 DEFAULT_FILE_STORAGE = 'configs.storage_backends.MediaStorage'
 
 django_heroku.settings(locals())
+djcelery.setup_loader()
 
 STATICFILES_LOCATION = 'static'
-STATIC_URL = "//%s/%s/" % (AWS_CLOUDFRONT_DOMAIN, STATICFILES_LOCATION)
-STATIC_ROOT = '/%s/' % STATICFILES_LOCATION
+#STATIC_URL = "//%s/%s/" % (AWS_CLOUDFRONT_DOMAIN, STATICFILES_LOCATION)
+#STATIC_ROOT = '/%s/' % STATICFILES_LOCATION
 
-STATICFILES_STORAGE = 'configs.storage_backends.StaticStorage'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
+#STATICFILES_STORAGE = 'configs.storage_backends.StaticStorage'

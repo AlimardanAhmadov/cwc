@@ -1,5 +1,4 @@
-from cmath import exp
-import json, re, base64
+import json, re
 from django.contrib.auth.models import User
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
@@ -7,7 +6,6 @@ from django.conf import settings
 from django.db import transaction
 from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
-from django.core.files.base import ContentFile
 from rest_auth.utils import jwt_encode 
 from rest_auth.app_settings import JWTSerializer
 from rest_framework import permissions, status, generics
@@ -129,6 +127,7 @@ class UpdatePesonalInfoView(ListCreateAPIView):
                     user.coach.available_days = request.data.get('available_days')
                     user.coach.timing = request.data.get('timing')
                     user.coach.image_url = request.data.get('image_url')
+                    user.coach.about = request.data.get('about')
                     user.coach.save()
                     return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
                 else:
@@ -242,13 +241,8 @@ class DeleteServiceView(generics.ListCreateAPIView):
 
     def get_object(self, pk):
         try:
-            service = Service.cached_by_pk(pk)
-            if service:
-                "Cache calling"
-            else:
-                service = get_object_or_404(Service, id=pk)
+            service = get_object_or_404(Service, id=pk)
             return service
-
         except Service.DoesNotExist:
             response = HttpResponse(json.dumps({'err': 'Something went wrong'}), 
                 content_type='application/json')

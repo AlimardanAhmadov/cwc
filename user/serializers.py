@@ -246,3 +246,10 @@ class RefreshTokenSerializer(serializers.Serializer):
             RefreshToken(self.token).blacklist()
         except TokenError:
             self.fail('bad_token')
+
+
+class SendResetPasswordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ["email", ]
+

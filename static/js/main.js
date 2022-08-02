@@ -468,10 +468,11 @@ $(document).on('submit', '#editCoachInfo', function(event){
 		'old_password': $('input[name="old_password"]').val(),
 		'available_days': days,
 		'category': $('select[name="category"]').val(), 
-		'about': $('textarea[name="category"]').val(), 
+		'about': $('textarea[name="about"]').val(), 
 		'timing': $('input[name="timing"]').val(),
 		'image_url': bg
-	} 
+	};
+	$('#editCoachInfo .menu-block').html('<div class="loader"></div>');
 	$.ajax({
 		type: 'POST',
 		url: '/edit-profile/',
@@ -479,10 +480,11 @@ $(document).on('submit', '#editCoachInfo', function(event){
 		dataType: 'json',
 		headers: { 'X-CSRFTOKEN': csrftoken, "Content-type": "application/json"  },
 		success: function () {
-			console.log("success!");
+			$('#editCoachInfo .menu-block').html('Save Changes');
 		},
         error: function (xhr, ajaxOptions, thrownError) {
-			var list_of_errors = xhr.responseJSON['err']
+			$('#editCoachInfo .menu-block').html('Save Changes');
+			var list_of_errors = xhr.responseJSON['err'];
 			window.scrollTo(0, 0);
 			if ($('.msg-danger').length > 0) {
 				$('.msg-danger').remove();
@@ -627,8 +629,6 @@ $(document).on('click', '.paypal-buy-now-button', function(event){
 		headers: { 'X-CSRFTOKEN': csrftoken, "Content-type": "application/json"  },
 		success: function (data) {
 			window.location.href = data.redirect_value
-			//window.open(data.redirect_value, "newPayPalWindow", "width=800, height=600");
-    		//return false;
 		},
         error: function () {
 		}
@@ -761,6 +761,99 @@ $(document).on('submit', '#loginForm', function(event){
 	}); 
 });
 
+$(document).on('submit', '#resetsendForm', function(event){
+	event.preventDefault();
+	var input_data = {
+		'email': $('input[name="email"]').val(), 
+	}
+	console.log(input_data)
+	$('#resetsendForm button').html('<div class="loader"></div>')
+	$.ajax({
+		type: 'POST',
+		url: '/reset/password/',
+		data: JSON.stringify(input_data),
+		dataType: 'json',
+		headers: { 'X-CSRFTOKEN': csrftoken, "Content-type": "application/json"  },
+		success: function () {
+			$('#resetsendForm button').html('Submit');
+			$('input[name="email"]').val('');
+			$('<span>Password reset e-mail has been sent! Please check your inbox</span>').insertBefore('#resetsendForm');
+			$('#resetsendForm .form-block, #resetsendForm .menu-block').remove();
+		},
+        error: function (xhr, ajaxOptions, thrownError) {
+			var list_of_errors = xhr.responseJSON['err']
+			$('#resetsendForm button').html('Submit')
+			if ($('.msg-danger').length > 0) {
+				$('.msg-danger').remove();
+				$('<div class="xd-message msg-danger"><div class="xd-message-icon"><i class="ion-close-round"></i></div><div class="xd-message-content"><ul id="listError">'
+			
+				+'</ul></div><a class="xd-message-close"><i class="close-icon ion-close-round"></i></a>  </div>').insertBefore('#resetsendForm');
+				for(let i = 0; i < list_of_errors.length; i++){  
+					var newItem = "<li>" + list_of_errors[i] + "</li>";
+					$( "#listError" ).append( newItem );
+				}
+			}
+			else {
+				$('<div class="xd-message msg-danger"><div class="xd-message-icon"><i class="ion-close-round"></i></div><div class="xd-message-content"><ul id="listError">'
+			
+				+'</ul></div><a class="xd-message-close"><i class="close-icon ion-close-round"></i></a>  </div>').insertBefore('#resetsendForm');
+				for(let i = 0; i < list_of_errors.length; i++){
+					var newItem = "<li>" + list_of_errors[i] + "</li>";
+					$( "#listError" ).append( newItem );
+				}
+			}
+		}
+	}); 
+});
+
+$(document).on('submit', '#confirmResetForm', function(event){
+	event.preventDefault();
+	var url = String(document.location.href).replace( "http://localhost:8000", "" );
+	
+	var input_data = {
+		'new_password1': $('input[name="new_password1"]').val(), 
+		'new_password2': $('input[name="new_password2"]').val(), 
+		'uid':url.substring(24, 26),
+		'token':url.substring(27, 66),
+	}
+	$('#confirmResetForm button').html('<div class="loader"></div>');
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data: JSON.stringify(input_data),
+		dataType: 'json',
+		headers: { 'X-CSRFTOKEN': csrftoken, "Content-type": "application/json"  },
+		success: function () {
+			window.location.href = "/";
+			$('#confirmResetForm button').html('Save');
+			$('input[name="email"]').val('');
+		},
+        error: function (xhr, ajaxOptions, thrownError) {
+			var list_of_errors = xhr.responseJSON['err']
+			$('#confirmResetForm button').html('Submit')
+			if ($('.msg-danger').length > 0) {
+				$('.msg-danger').remove();
+				$('<div class="xd-message msg-danger"><div class="xd-message-icon"><i class="ion-close-round"></i></div><div class="xd-message-content"><ul id="listError">'
+			
+				+'</ul></div><a class="xd-message-close"><i class="close-icon ion-close-round"></i></a>  </div>').insertBefore('#confirmResetForm');
+				for(let i = 0; i < list_of_errors.length; i++){  
+					var newItem = "<li>" + list_of_errors[i] + "</li>";
+					$( "#listError" ).append( newItem );
+				}
+			}
+			else {
+				$('<div class="xd-message msg-danger"><div class="xd-message-icon"><i class="ion-close-round"></i></div><div class="xd-message-content"><ul id="listError">'
+			
+				+'</ul></div><a class="xd-message-close"><i class="close-icon ion-close-round"></i></a>  </div>').insertBefore('#confirmResetForm');
+				for(let i = 0; i < list_of_errors.length; i++){
+					var newItem = "<li>" + list_of_errors[i] + "</li>";
+					$( "#listError" ).append( newItem );
+				}
+			}
+		}
+	}); 
+});
+
 $(document).on('click', '#signOut', function(event){
 	event.preventDefault();
   
@@ -809,5 +902,3 @@ copyText.querySelector("button").addEventListener("click", function () {
 	}, 2500);
 });
 
-
- 

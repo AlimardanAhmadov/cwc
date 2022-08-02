@@ -1,5 +1,6 @@
 from django.contrib import admin
 from subscriptions.models import PlanCost, UserSubscription, SubscriptionTransaction, PlanListDetail, SubscriptionPlan
+from .models import Payment
 
 
 class SubscriptionInline(admin.StackedInline):
@@ -14,3 +15,4 @@ admin.site.register(SubscriptionPlan, SubscriptionAdmin)
 admin.site.register(UserSubscription)
 admin.site.register(SubscriptionTransaction)
 admin.site.register(PlanListDetail)
+admin.site.register(Payment)

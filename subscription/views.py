@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.db import transaction
 from django.conf import settings
 from django.utils import timezone
-from rest_framework import permissions, status, generics
+from rest_framework import permissions, status
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 
@@ -15,6 +15,9 @@ import json, re, paypalrestsdk
 
 from .serializers import SubscriptionSerializer
 from subscriptions.models import UserSubscription, PlanCost, SubscriptionPlan
+
+from .tasks import create_payment_model, recurring_payment_warning
+from .refund import refund_customer
 
 
 
@@ -31,7 +34,7 @@ class MyHTMLRenderer(TemplateHTMLRenderer):
             context = {"items": context}
         return context
 
-def get_subscription_price(request):
+def get_subscription_price():
     active_subscription = SubscriptionPlan.objects.filter()[:1].get()
     plan_cost = PlanCost.objects.filter(plan=active_subscription)[:1].get()
     return plan_cost.cost
@@ -56,7 +59,7 @@ class PurchaseSubscriptionView(ListCreateAPIView):
                 serializer = SubscriptionSerializer(active_subscription, data=request.data, context={'request': request})
                 
                 if serializer.is_valid():
-                    cost = int(get_subscription_price(request).normalize())
+                    cost = int(get_subscription_price().normalize())
                     plan_cost = float("{0:.2f}".format(cost))
 
                     billing_plan = paypalrestsdk.Payment({
@@ -118,38 +121,49 @@ class PurchaseSubscriptionView(ListCreateAPIView):
             
 
 def execute(request):
-    payment_id = request.session.get("payment_id")
-    payment = paypalrestsdk.Payment.find(payment_id)
-    if payment.execute({'payer_id':request.GET.get("PayerID")}):
-        print('Execute success!')
-        current_user = request.user
-        active_subscription = SubscriptionPlan.objects.filter()[:1].get()
-        active_plan_cost = PlanCost.objects.filter(plan=active_subscription)[:1].get()
+    with transaction.atomic():
+        payment_id = request.session.get("payment_id")
+        payment = paypalrestsdk.Payment.find(payment_id)
 
-        user_subs = UserSubscription.objects.create(
-            subscription=active_plan_cost,
-            user = current_user,
-            date_billing_start=timezone.now(),
-            date_billing_last=timezone.now(),
-            date_billing_next=timezone.now() + timedelta(days=31)
-        )
-        if user_subs:
-            if hasattr(request.user, 'profile'):
-                request.user.profile.paid = True
-                request.user.profile.save()
+        if payment.execute({'payer_id':request.GET.get("PayerID")}):
+            current_user = request.user
+            active_subscription = SubscriptionPlan.objects.filter()[:1].get()
+            active_plan_cost = PlanCost.objects.filter(plan=active_subscription)[:1].get()
 
-            elif hasattr(request.user, 'coach'):
-                request.user.coach.paid = True
-                request.user.coach.save()
+            if UserSubscription.objects.filter(subscription=active_plan_cost).exists():
+                user_subs = get_object_or_404(UserSubscription, subscription=active_plan_cost)
             else:
-                print("Nothing is happening")
-    else:
-        print(payment.error)
-    if hasattr(request.user, 'coach'):
-        redirect_url = "/users/{}/coach_dashboard".format(request.user.username)
-    else:
-        redirect_url = "/user-profile"
-    return redirect(redirect_url)
+                user_subs = UserSubscription.objects.create(
+                    subscription=active_plan_cost,
+                    user = current_user,
+                    date_billing_start=timezone.now(),
+                    date_billing_last=timezone.now(),
+                    date_billing_next=timezone.now() + timedelta(days=31)
+                )
+            
+            create_payment_model.delay(current_user.id, payment_id)
+
+            next_month = datetime.utcnow() + timedelta(days=31)
+            recurring_payment_warning.apply_async(args=[current_user.id, ], eta=next_month)
+
+            if user_subs:
+                if hasattr(request.user, 'profile'):
+                    request.user.profile.paid = True
+                    request.user.profile.save()
+
+                elif hasattr(request.user, 'coach'):
+                    request.user.coach.paid = True
+                    request.user.coach.save()
+                else:
+                    print("Nothing is happening")
+        else:
+            print(payment.error)
+            transaction.set_rollback(True)
+        if hasattr(request.user, 'coach'):
+            redirect_url = "/users/{}/coach_dashboard".format(request.user.username)
+        else:
+            redirect_url = "/user-profile"
+        return redirect(redirect_url)
 
 
 
@@ -167,21 +181,28 @@ class CancelUserSubscriptionView(ListCreateAPIView):
 
     @transaction.atomic
     def post(self, request, *args, **kwargs):
-        current_user = self.request.user
-        try:
-            user_subs = get_object_or_404(UserSubscription, user__username=current_user.username)
-            serializer = SubscriptionSerializer(user_subs, context={'request': request})
-            if user_subs.delete():
-                if hasattr(current_user, 'profile'):
-                    current_user.profile.paid = False
-                    current_user.profile.save()
 
-                elif hasattr(current_user, 'coach'):
-                    current_user.coach.paid = False
-                    current_user.coach.save()
-                else:
-                    print("Nothing is happening")
-                return JsonResponse(serializer.data, status=status.HTTP_200_OK)
-        except Exception as exc:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        with transaction.atomic():
+            current_user = self.request.user
+            try:
+                user_subs = get_object_or_404(UserSubscription, user__username=current_user.username)
+                serializer = SubscriptionSerializer(user_subs, context={'request': request})
+                if user_subs.delete():
+                    #refund_customer.delay(current_user.payment.order_id, user_subs.subscription.cost)
+
+                    if hasattr(current_user, 'profile'):
+                        current_user.profile.paid = False
+                        current_user.profile.save()
+
+                    elif hasattr(current_user, 'coach'):
+                        current_user.coach.paid = False
+                        current_user.coach.save()
+                    else:
+                        transaction.set_rollback(True)
+                        print("Nothing is happening")
+                    return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+            except Exception as exc:
+                print(exc)
+                transaction.set_rollback(True)
+                return Response(status=status.HTTP_404_NOT_FOUND)
 

@@ -209,7 +209,7 @@ padding: 14px 27px;
 .navbar:nth-child(4) {
     margin-left: 1.5rem !important;
 } 
-@media only screen and (min-width: 48rem) {
+@media only screen and (min-width: 57rem) {
 .menu {
     position: relative;
     top: 0;
@@ -1639,15 +1639,16 @@ color: black;
     margin-bottom: 15px;
 }
 
-#loginForm .small {
+.modal-window .small {
     color: #707070;
 }
 
-#loginForm a {
+.modal-window a {
     color: #000;
 }
 
-#loginForm .save-changes {
+.modal-window .save-changes {
+    display: flex;
     flex-direction: column;
     gap: 2px;
 }

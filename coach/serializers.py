@@ -117,6 +117,7 @@ class UpdateCoachSerializer(serializers.ModelSerializer):
     timing = serializers.CharField(source="coach.timing")
     image_url = serializers.CharField(source="coach.image_url")
     full_name = serializers.CharField(source="coach.full_name")
+    about = serializers.CharField(source="coach.about")
 
     class Meta:
         model = get_user_model()
@@ -127,7 +128,8 @@ class UpdateCoachSerializer(serializers.ModelSerializer):
             'category',
             'available_days',
             'timing',
-            'image_url'
+            'image_url',
+            'about'
         )
         
         extra_kwargs = {

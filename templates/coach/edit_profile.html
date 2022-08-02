@@ -13,7 +13,7 @@
                 </div>
                 <div class="user-info" style="display: flex; flex-direction: column;">
                     <h3>Hi, I'm {{ request.user.coach.full_name }}</h3>
-                    <span class="user-title">Business Coach</span>
+                    <span class="user-title">{{ request.user.coach.category }}</span>
                     <span class="user-sub-info small">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="#e37946" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -136,7 +136,7 @@
                     Are you sure you want to cancel your subcription?
                 </div>
                 <div class="save-changes">
-                    <button id="cancelBtn" type="submit" class="btn menu-block">Yes</button>
+                    <button id="cancelBtn" type="submit" class="btn menu-block" style="margin-top: 15px;">Yes</button>
                 </div>
             </div>
         </div>
