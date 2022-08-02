@@ -67,8 +67,8 @@ class PurchaseSubscriptionView(ListCreateAPIView):
                         "payer": {
                             "payment_method": "paypal"},
                         "redirect_urls": {
-                            "return_url": "http://127.0.0.1:8000/payment/execute",
-                            "cancel_url": "http://127.0.0.1:8000/"},
+                            "return_url": "https://cwc1.herokuapp.com//payment/execute",
+                            "cancel_url": "https://cwc1.herokuapp.com//"},
                         "transactions": [{
                             "item_list": {
                                 "items": [{
