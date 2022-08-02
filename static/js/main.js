@@ -71,6 +71,8 @@ $(document).on('submit', '#signupForm', function(event){
 		'image_url': bg
 	}
 
+	console.log(email)
+
 	$('#signupForm .menu-block').html('<div class="loader"></div>');
   
 	$.ajax({
