@@ -132,9 +132,9 @@ CELERY_TIMEZONE = 'Asia/Baku'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'cwcdb',
-        'USER': 'shaun',
-        'PASSWORD': 'cwcdbshaun',
+        'NAME': 'mydb',
+        'USER': 'dbuser',
+        'PASSWORD': '2311',
         'HOST': 'localhost',
         'PORT': '5432',
     }
