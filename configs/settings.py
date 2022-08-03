@@ -110,7 +110,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'configs.wsgi.application'
 
-CELERY_RESULT_BACKEND = "django-db"
+#CELERY_RESULT_BACKEND = "django-db"
 
 #BROKER_URL = 'redis://localhost:6379/0'
 BROKER_URL = os.environ['REDIS_URL']
@@ -132,11 +132,11 @@ CELERY_TIMEZONE = 'Asia/Baku'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['DB_NAME'],
-        'USER': os.environ['DB_USER'],
-        'PASSWORD': os.environ['DB_PASSWORD'],
-        'HOST': os.environ['DB_HOST'],
-        'PORT': os.environ['DB_PORT'],
+        'NAME': 'cwcdb',
+        'USER': 'shaun',
+        'PASSWORD': 'cwcdbshaun',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 """else:
