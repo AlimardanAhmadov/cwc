@@ -1656,3 +1656,9 @@ color: black;
     border-color: #fff;
     color: #fff;
 }
+
+.footer-img {
+    width: 155px;
+    height: auto;
+    margin-bottom: 15px;
+}

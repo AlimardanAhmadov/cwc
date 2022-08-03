@@ -300,3 +300,11 @@ STATIC_URL = "//%s/%s/" % (AWS_CLOUDFRONT_DOMAIN, STATICFILES_LOCATION)
 STATIC_ROOT = '/%s/' % STATICFILES_LOCATION
 
 STATICFILES_STORAGE = 'configs.storage_backends.StaticStorage'
+
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+#STATIC_URL = '/static/'
+
+#STATICFILES_DIRS = [
+#    os.path.join(BASE_DIR, 'static')
+#]
