@@ -124,9 +124,9 @@ def execute(request):
     with transaction.atomic():
         payment_id = request.session.get("payment_id")
         payment = paypalrestsdk.Payment.find(payment_id)
+        current_user = request.user
 
         if payment.execute({'payer_id':request.GET.get("PayerID")}):
-            current_user = request.user
             active_subscription = SubscriptionPlan.objects.filter()[:1].get()
             active_plan_cost = PlanCost.objects.filter(plan=active_subscription)[:1].get()
 
@@ -148,19 +148,19 @@ def execute(request):
 
             if user_subs:
                 if hasattr(request.user, 'profile'):
-                    request.user.profile.paid = True
-                    request.user.profile.save()
+                    current_user.profile.paid = True
+                    current_user.profile.save()
 
                 elif hasattr(request.user, 'coach'):
-                    request.user.coach.paid = True
-                    request.user.coach.save()
+                    current_user.coach.paid = True
+                    current_user.coach.save()
                 else:
                     print("Nothing is happening")
         else:
             print(payment.error)
             transaction.set_rollback(True)
-        if hasattr(request.user, 'coach'):
-            redirect_url = "/users/{}/coach_dashboard".format(request.user.username)
+        if hasattr(current_user, 'coach'):
+            redirect_url = "/users/{}/coach_dashboard".format(current_user.username)
         else:
             redirect_url = "/user-profile"
         return redirect(redirect_url)
