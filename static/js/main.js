@@ -170,7 +170,7 @@ $(document).on('click', '.verification__send_new', function(event){
 		dataType: 'json',
 		headers: { 'X-CSRFTOKEN': csrftoken, "Content-type": "application/json"  },
 		success: function (data) {
-			$('<span class="success-msg" style="color: green">New code is sent</span>').insertBefore('.verification__fields');
+			$('<span class="success-msg" style="color: green">New code has been sent</span>').insertBefore('.verification__fields');
 		},
         error: function (xhr, ajaxOptions, thrownError) {
 			$('<span class="error-msg" style="color: red">'+ xhr.responseJSON['err'] +'</span>').insertBefore('.verification__fields');
