@@ -71,7 +71,8 @@ $(document).on('submit', '#signupForm', function(event){
 		'image_url': bg
 	}
 
-	$('#signupForm .menu-block').html('<div class="loader"></div>').prop('disabled', true);
+	$('#signupForm .menu-block').html('<div class="loader"></div>');
+	$('#signupForm .menu-block').prop('disabled', true);
   
 	$.ajax({
 		type: 'POST',
@@ -213,7 +214,8 @@ $(document).on('click', ".list-of-badges .badge", function(event){
 
 $(document).on('submit', '#coachForm', function(event){
 	event.preventDefault();
-	$('#coachForm .menu-block').html('<div class="loader"></div>').prop('disabled', true);;
+	$('#coachForm .menu-block').html('<div class="loader"></div>')
+	$('#coachForm .menu-block').prop('disabled', true);
 
 	var titles = $('input[name=day]:checked').map(function(idx, elem) {
 		return $(elem).val();
