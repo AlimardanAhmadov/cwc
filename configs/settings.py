@@ -128,18 +128,18 @@ CELERY_TIMEZONE = 'Asia/Baku'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-"""if os.getenv('GAE_APPLICATION', None):"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'mydb',
-        'USER': 'dbuser',
-        'PASSWORD': '2311',
-        'HOST': 'localhost',
-        'PORT': '5432',
+if os.environ['RDS_DB']:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.environ['DB_NAME'],
+            'USER': os.environ['DB_USER'],
+            'PASSWORD': os.environ['DB_PASSWORD'],
+            'HOST': os.environ['DB_HOST'],
+            'PORT': os.environ['DB_PORT'],
+        }
     }
-}
-"""else:
+else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -149,7 +149,7 @@ DATABASES = {
             'USER': 'postgres',
             'PASSWORD': 'bitterpickle_2001',
         }
-    }"""
+    }
 # [END db_setup]
 
 # Password validation
