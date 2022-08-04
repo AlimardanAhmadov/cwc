@@ -82,7 +82,7 @@ class RegisterCoachAPIView(ListCreateAPIView):
             except Exception as exc:
                 print(exc)
                 transaction.set_rollback(True)
-                response = HttpResponse(json.dumps("Something went wrong"), 
+                response = HttpResponse(json.dumps({'err': ["Something went wrong"]}), 
                         content_type='application/json')
                 response.status_code = 400
                 return response
