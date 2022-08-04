@@ -149,7 +149,7 @@ $(document).on('submit', '.verification', function(event){
 		dataType: 'json',
 		headers: { 'X-CSRFTOKEN': csrftoken, "Content-type": "application/json"  },
 		success: function () {
-			window.location.href = "/";
+			window.location.href = "/#login-modal";
 		},
         error: function () {
 			$('<span class="error-msg" style="color: red">The code is incorrect!</span>').insertBefore('.verification__fields')
