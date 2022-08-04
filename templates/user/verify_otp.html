@@ -45,7 +45,7 @@
 
     <section class="verification__timeout">
       <p>
-        wait <strong class="verification__counter">00 : 00</strong> to <button type="button" class="verification__send_new" disabled>send new code</button>
+        wait <strong class="verification__counter">00 : 00</strong> to <button type="button" class="verification__send_new">send new code</button>
       </p>
     </section>
 
@@ -205,7 +205,6 @@ function timer(
   target.innerHTML = timeFormat(seconds);
   if (seconds < 0) {
     target.innerHTML = `00 : 00`;
-    $('.verification__send_new').prop('disabled', true);
     document
       .querySelector(`.verification`)
       .classList.add(`verification--timed-out`);

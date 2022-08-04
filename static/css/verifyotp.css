@@ -226,6 +226,7 @@ body,
   color: inherit;
   font: inherit;
   transition: top 0.5s 0.1s ease, height 0.5s 0.1s ease, transform 0.3s ease, background 0.3s ease;
+  pointer-events: none;
 }
 .verification--timed-out {
   position: relative;
@@ -243,6 +244,7 @@ body,
   background: var(--color-primary);
   color: var(--color-white);
   font-weight: bold;
+  pointer-events: initial;
 }
 .verification--timed-out .verification__send_new:hover {
   transform: scale(1.05);
