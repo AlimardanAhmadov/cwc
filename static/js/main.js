@@ -163,7 +163,7 @@ $(document).on('click', '.verification__send_new', function(event){
 	event.preventDefault();
   
 	var url = String(document.location.href);
-	let url_username = url.substr(33)
+	let url_username = url.substr(38)
 	$.post({
 		type: 'POST',
 		url: '/resend-sms/' + url_username + '/',
