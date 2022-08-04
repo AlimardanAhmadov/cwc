@@ -71,7 +71,7 @@ $(document).on('submit', '#signupForm', function(event){
 		'image_url': bg
 	}
 
-	$('#signupForm .menu-block').html('<div class="loader"></div>').prop('disabled', true);;
+	$('#signupForm .menu-block').html('<div class="loader"></div>').prop('disabled', true);
   
 	$.ajax({
 		type: 'POST',
