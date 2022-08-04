@@ -169,7 +169,7 @@ $(document).on('click', '.verification__send_new', function(event){
 		url: '/resend-sms/' + url_username + '/',
 		dataType: 'json',
 		headers: { 'X-CSRFTOKEN': csrftoken, "Content-type": "application/json"  },
-		success: function (data) {
+		success: function () {
 			$('<span class="success-msg" style="color: green">New code has been sent</span>').insertBefore('.verification__fields');
 		},
         error: function (xhr, ajaxOptions, thrownError) {
