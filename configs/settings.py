@@ -128,7 +128,7 @@ CELERY_TIMEZONE = 'Asia/Baku'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-"""if os.environ['RDS_DB']:
+if os.environ['RDS_DB']:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -139,18 +139,17 @@ CELERY_TIMEZONE = 'Asia/Baku'
             'PORT': os.environ['DB_PORT'],
         }
     }
-else:"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': 'localhost',
-        'PORT': '5432',
-        'NAME': 'localdb',
-        'USER': 'postgres',
-        'PASSWORD': 'bitterpickle_2001',
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'HOST': 'localhost',
+            'PORT': '5432',
+            'NAME': 'localdb',
+            'USER': 'postgres',
+            'PASSWORD': 'bitterpickle_2001',
+        }
     }
-}
-# [END db_setup]
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
