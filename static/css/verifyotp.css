@@ -198,6 +198,7 @@ body,
   text-align: justify;
   padding: 4px 2px;
   padding-left: 4px;
+  text-align: center;
 }
 .verification__timeout strong {
   display: inline-block;
