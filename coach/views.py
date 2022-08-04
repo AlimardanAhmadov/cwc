@@ -62,7 +62,7 @@ class RegisterCoachAPIView(ListCreateAPIView):
                 if serializer.is_valid():
                     user = self.perform_create(serializer)
                     self.token = jwt_encode(user)
-                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                    return JsonResponse(serializer.data, status=status.HTTP_200_OK)
                 else:
                     data = []
                     emessage=serializer.errors
