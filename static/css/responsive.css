@@ -70,11 +70,6 @@
 
 
 @media screen and (max-width: 450px) {
-    .ft-main-item form {
-        max-width: auto;
-        width: auto;
-    }
-
     .steps {
         width: 100%;
         display: block;
@@ -224,5 +219,11 @@
 @media screen and (max-width: 976px) {
     .ft-main {
         display: block;
+    }
+}
+
+@media screen and (max-width: 740px) {
+    #notFound p {
+        width: 100%;
     }
 }

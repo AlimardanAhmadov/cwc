@@ -1,3 +1,4 @@
+{% if results %}
 {% for coach in results %}
 <article>
     <a href="{% url 'profile_overview' coach.user.username %}">
@@ -14,3 +15,9 @@
     </a>
 </article>
 {% endfor %}
+{% else %}
+<div id="notFound">
+<h5>No coaches found</h5>
+<p>Try checking your spelling or use more general term. Also, you can explain to us the coaches you need, and we'll help you find them </p>
+</div>
+{% endif %}
