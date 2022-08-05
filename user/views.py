@@ -218,7 +218,13 @@ class VerifySMSView(APIView):
                 if serializer.is_valid():
                     pin = int(request.data.get("pin"))
                     confirmation = get_object_or_404(SMSVerification, user__username=username)
-                    confirmation.confirm(pin=pin)
+                    if confirmation.verified:
+                        response = HttpResponse(json.dumps({'err': "This number has already been verified"}),
+                            content_type='application/json')
+                        response.status_code = 406
+                        return response
+                    else:
+                        confirmation.confirm(pin=pin)
                     return JsonResponse({'data':serializer.data, 'status':status.HTTP_200_OK})
                 else:
                     data = []

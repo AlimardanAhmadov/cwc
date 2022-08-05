@@ -128,7 +128,7 @@ CELERY_TIMEZONE = 'Asia/Baku'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-if os.environ['RDS_DB']:
+if os.environ['RDS_DB'] == 'True':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',

@@ -151,8 +151,10 @@ $(document).on('submit', '.verification', function(event){
 		success: function () {
 			window.location.href = "/#login-modal";
 		},
-        error: function () {
-			$('<span class="error-msg" style="color: red">The code is incorrect!</span>').insertBefore('.verification__fields')
+        error: function (xhr, ajaxOptions, thrownError) {
+			if ($('.error-msg').length == 0) {
+				$('<span class="error-msg" style="color: red">'+ xhr.responseJSON['err'] +'</span>').insertBefore('.verification__fields');
+			}
 		}
 	}); 
 });
