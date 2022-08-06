@@ -145,7 +145,6 @@
             <div class="section-title">
                 <div class="section-header">
                     <h5>Personal Overview</h5>
-                    <!--<a href="" class="small">Edit Overview</a>-->
                 </div>
                 <p class="small">
                     {{ request.user.coach.about }}
@@ -281,4 +280,7 @@
     </div>
 </div>
 
+<script>
+	$(document).attr("title", "CWC | Profile");
+</script>
 {% endblock %}
