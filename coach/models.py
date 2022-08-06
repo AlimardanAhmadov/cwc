@@ -46,7 +46,7 @@ class TimeStampedModel(models.Model):
 
 class Coach(TimeStampedModel):
     user = models.OneToOneField(User, related_name="coach", on_delete=models.CASCADE)
-    profile_picture = models.ImageField(upload_to=user_directory_path, blank=True)
+    profile_picture = models.ImageField(upload_to=user_directory_path, default='default.png')
     phone_number = PhoneNumberField(blank=True)
     about = models.TextField(blank=True, null=True)
     available_days = models.CharField(max_length=400, blank=True, null=True)

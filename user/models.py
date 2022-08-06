@@ -1,3 +1,4 @@
+from email.policy import default
 import logging, base64
 from datetime import datetime, timezone, timedelta
 from django.db import models
@@ -40,7 +41,7 @@ class TimeStampedModel(models.Model):
 
 class Profile(TimeStampedModel):
     user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
-    profile_picture = models.ImageField(upload_to=user_directory_path, blank=True)
+    profile_picture = models.ImageField(upload_to=user_directory_path, default='default.png')
     image_url = models.TextField(blank=True, null=True)
     phone_number = PhoneNumberField(blank=True)
     about = models.TextField(blank=True, null=True)

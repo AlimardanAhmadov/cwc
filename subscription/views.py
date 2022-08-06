@@ -17,7 +17,6 @@ from .serializers import SubscriptionSerializer
 from subscriptions.models import UserSubscription, PlanCost, SubscriptionPlan
 
 from .tasks import create_payment_model, recurring_payment_warning
-from .refund import refund_customer
 
 
 

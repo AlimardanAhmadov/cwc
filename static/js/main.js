@@ -81,43 +81,32 @@ $(document).on('submit', '#signupForm', function(event){
 		dataType: 'json',
 		headers: { 'X-CSRFTOKEN': csrftoken, "Content-type": "application/json"  },
 		success: function (data) {
-			$('#signupForm .menu-block').html('Sign Up').prop('disabled', false);;
+			$('.button-group .menu-block').html('Sign Up');
+			$('.button-group .menu-block').prop('disabled', false);
 			window.location.href = "/verify-sms/" + input_data['username'];
 		},
         error: function (xhr, ajaxOptions, thrownError) {
-			$('#signupForm .menu-block').html('Sign Up').prop('disabled', false);;
+			$('.button-group .menu-block').html('Sign Up');
+			$('.button-group .menu-block').prop('disabled', false);
 			window.location.href = "#";
 			var list_of_errors = xhr.responseJSON['error']
-			if ($('.msg-danger').length > 0) {
+			if ($('.msg-danger').length != 0) {
 				$('.msg-danger').remove();
 				$('<div class="xd-message msg-danger"><div class="xd-message-icon"><i class="ion-close-round"></i></div><div class="xd-message-content"><ul id="listError">'
 			
-				+'</ul></div><a class="xd-message-close"><i class="close-icon ion-close-round"></i></a>  </div>').insertBefore('#signupFor');
+				+'</ul></div><a class="xd-message-close"><i class="close-icon ion-close-round"></i></a>  </div>').insertBefore('#signupForm');
 				for(let i = 0; i < list_of_errors.length; i++){  
 					var newItem = "<li>" + list_of_errors[i] + "</li>";
 					$( "#listError" ).append( newItem );
 				}
 			}
 			else {
-				var list_of_errors = xhr.responseJSON['error']
-				if ($('.msg-danger').length > 0) {
-					$('.msg-danger').remove();
-					$('<div class="xd-message msg-danger"><div class="xd-message-icon"><i class="ion-close-round"></i></div><div class="xd-message-content"><ul id="listError">'
-				
-					+'</ul></div><a class="xd-message-close"><i class="close-icon ion-close-round"></i></a>  </div>').insertBefore('#signupForm');
-					for(let i = 0; i < list_of_errors.length; i++){  
-						var newItem = "<li>" + list_of_errors[i] + "</li>";
-						$( "#listError" ).append( newItem );
-					}
-				}
-				else {
-					$('<div class="xd-message msg-danger"><div class="xd-message-icon"><i class="ion-close-round"></i></div><div class="xd-message-content"><ul id="listError">'
-				
-					+'</ul></div><a class="xd-message-close"><i class="close-icon ion-close-round"></i></a>  </div>').insertBefore('#signupForm');
-					for(let i = 0; i < list_of_errors.length; i++){
-						var newItem = "<li>" + list_of_errors[i] + "</li>";
-						$( "#listError" ).append( newItem );
-					}
+				$('<div class="xd-message msg-danger"><div class="xd-message-icon"><i class="ion-close-round"></i></div><div class="xd-message-content"><ul id="listError">'
+			
+				+'</ul></div><a class="xd-message-close"><i class="close-icon ion-close-round"></i></a>  </div>').insertBefore('#signupForm');
+				for(let i = 0; i < list_of_errors.length; i++){
+					var newItem = "<li>" + list_of_errors[i] + "</li>";
+					$( "#listError" ).append( newItem );
 				}
 			}
 		}
@@ -249,14 +238,16 @@ $(document).on('submit', '#coachForm', function(event){
 		dataType: 'json',
 		headers: { 'X-CSRFTOKEN': csrftoken, "Content-type": "application/json"  },
 		success: function (data) {
-			$('#coachForm .menu-block').html('Sign Up').prop('disabled', false);;
+			$('.button-group .menu-block').html('Sign Up');
+			$('.button-group .menu-block').prop('disabled', false);
 			window.location.href = "/verify-sms/" + input_data['username'];
 		},
         error: function (xhr, ajaxOptions, thrownError) {
-			$('#coachForm .menu-block').html('Sign Up').prop('disabled', false);;
+			$('.button-group .menu-block').html('Sign Up')
+			$('.button-group .menu-block').prop('disabled', false);
 			window.location.href = "#";
 			var list_of_errors = xhr.responseJSON['err']
-			if ($('.msg-danger').length > 0) {
+			if ($('.msg-danger').length != 0) {
 				$('.msg-danger').remove();
 				$('<div class="xd-message msg-danger"><div class="xd-message-icon"><i class="ion-close-round"></i></div><div class="xd-message-content"><ul id="listError">'
 			
