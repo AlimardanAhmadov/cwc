@@ -21,7 +21,7 @@ from .tasks import create_payment_model, recurring_payment_warning
 
 
 paypalrestsdk.configure({
-    "mode": "sandbox", # sandbox or live
+    "mode": "live", # sandbox or live
     "client_id": settings.PAYPAL_CLIENT_ID,
     'client_secret': settings.PAYPAL_CLIENT_SECRET}
 )
