@@ -17,34 +17,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 
 User = get_user_model()
 
-url = "http://localhost:8000/"
-
-
-@shared_task(bind=True, max_retries=20)
-def send_register_mail(self, user, key):
-    body = """<p>
-    Hello from CWC!<br><br>
-
-    Confirmation Mail: %s
-
-    You can see more details in this link: %saccount-confirm-email/%s<br><br>
-
-    Thank you from E-commerce! <br><br>
-    <p>""" % (
-        user.username,
-        url,
-        key,
-    )
-
-    subject = "Registeration Mail"
-    recipients = [user.email]
-
-    try:
-        send_email(body, subject, recipients, "html")
-        return "Email Is Sent"
-    except Exception as e:
-        print("Email not sent ", e)
-        raise self.retry(exc=e, countdown=25200)
+url = "https://www.coachwithclass.com/"
 
 
 @shared_task(bind=True, max_retries=1)
