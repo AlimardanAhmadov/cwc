@@ -13,7 +13,7 @@ User = get_user_model()
 
 url = "http://localhost:8000/"
 
-@shared_task(bind=True, max_retries=20)
+@shared_task(bind=True, max_retries=1)
 def create_payment_model(self, user_id, order_id):
     try:
         selected_user = get_object_or_404(User, id=user_id)

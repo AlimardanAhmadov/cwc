@@ -804,7 +804,7 @@ $(document).on('submit', '#resetsendForm', function(event){
 
 $(document).on('submit', '#confirmResetForm', function(event){
 	event.preventDefault();
-	var url = String(document.location.href).replace( "http://localhost:8000", "" );
+	var url = String(document.location.href).replace( "https://www.coachwithclass.com/", "" );
 	
 	var input_data = {
 		'new_password1': $('input[name="new_password1"]').val(), 
@@ -812,6 +812,8 @@ $(document).on('submit', '#confirmResetForm', function(event){
 		'uid':url.substring(24, 26),
 		'token':url.substring(27, 66),
 	}
+	console.log(url.substring(24, 26));
+	console.log(url.substring(27, 66));
 	$('#confirmResetForm button').html('<div class="loader"></div>').prop('disabled', true);
 	$.ajax({
 		type: 'POST',
