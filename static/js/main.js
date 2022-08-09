@@ -809,8 +809,8 @@ $(document).on('submit', '#confirmResetForm', function(event){
 	var input_data = {
 		'new_password1': $('input[name="new_password1"]').val(), 
 		'new_password2': $('input[name="new_password2"]').val(), 
-		'uid':url.substring(23, 25),
-		'token':url.substring(26, 65),
+		'uid':custom_url.substring(23, 25),
+		'token':custom_url.substring(26, 65),
 	}
 
 	$('#confirmResetForm button').html('<div class="loader"></div>').prop('disabled', true);
