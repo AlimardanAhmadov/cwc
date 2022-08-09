@@ -809,11 +809,10 @@ $(document).on('submit', '#confirmResetForm', function(event){
 	var input_data = {
 		'new_password1': $('input[name="new_password1"]').val(), 
 		'new_password2': $('input[name="new_password2"]').val(), 
-		'uid':url.substring(23, 26),
-		'token':url.substring(26, 66),
+		'uid':url.substring(23, 25),
+		'token':url.substring(26, 65),
 	}
-	console.log(url.substring(23, 26));
-	console.log(url.substring(26, 66));
+
 	$('#confirmResetForm button').html('<div class="loader"></div>').prop('disabled', true);
 	$.ajax({
 		type: 'POST',
