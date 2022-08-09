@@ -804,7 +804,7 @@ $(document).on('submit', '#resetsendForm', function(event){
 
 $(document).on('submit', '#confirmResetForm', function(event){
 	event.preventDefault();
-	var custom_url = String(document.location.href).replace( "https://www.coachwithclass.com/", "" );
+	var custom_url = String(document.location.href).replace("https://www.coachwithclass.com/", "");
 	
 	var input_data = {
 		'new_password1': $('input[name="new_password1"]').val(), 
@@ -816,7 +816,7 @@ $(document).on('submit', '#confirmResetForm', function(event){
 	$('#confirmResetForm button').html('<div class="loader"></div>').prop('disabled', true);
 	$.ajax({
 		type: 'POST',
-		url: custom_url,
+		url: '/' + custom_url,
 		data: JSON.stringify(input_data),
 		dataType: 'json',
 		headers: { 'X-CSRFTOKEN': csrftoken, "Content-type": "application/json"  },
