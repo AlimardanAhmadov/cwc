@@ -106,6 +106,10 @@
         max-width: 100%;
         width: 100%;
     }
+
+    .gallery-item .card-text {
+        max-width: 97%;
+    }
 }
 
 /* PROFILE PAGES */
