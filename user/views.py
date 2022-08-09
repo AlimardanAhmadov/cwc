@@ -264,22 +264,37 @@ class PasswordResetView(ListCreateAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            email = request.data.get("email", None)
-            
-            try:
-                user = User.objects.get(email=email)
-                send_reset_password_email.delay(user.pk)
-            except User.DoesNotExist:
-                response = HttpResponse(json.dumps({'err': ['Please enter a valid email']}), 
+        try:
+            if serializer.is_valid():
+                email = request.data.get("email", None)
+                
+                try:
+                    user = User.objects.get(email=email)
+                    send_reset_password_email.delay(user.pk)
+                except User.DoesNotExist:
+                    response = HttpResponse(json.dumps({'err': ['Please enter a valid email']}), 
+                        content_type='application/json')
+                    response.status_code = 400
+                    return response
+                return Response(
+                    {"detail": _("Password reset e-mail has been sent.")},
+                    status=status.HTTP_200_OK,
+                )
+            else:
+                data = []
+                emessage=serializer.errors 
+                print(emessage)
+                for key in emessage:
+                    err_message = str(emessage[key])
+                    err_string = re.search("string='(.*)', ", err_message) 
+                    message_value = err_string.group(1)
+                    final_message = f"{key} - {message_value}"
+                    data.append(final_message)
+                response = HttpResponse(json.dumps({'err': data}), 
                     content_type='application/json')
                 response.status_code = 400
                 return response
-            return Response(
-                {"detail": _("Password reset e-mail has been sent.")},
-                status=status.HTTP_200_OK,
-            )
-        else:
+        except Exception:
             response = HttpResponse(json.dumps({'err': ['Something went wrong']}), 
                         content_type='application/json')
             response.status_code = 400
