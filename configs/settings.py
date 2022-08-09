@@ -254,7 +254,8 @@ EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-DEFAULT_FROM_EMAIL = 'coachwithclass@hotmail.com'
+#DEFAULT_FROM_EMAIL = 'coachwithclass@hotmail.com'
+DEFAULT_FROM_EMAIL = 'alimardan_akhmedov@hotmail.com'
 
 TWILIO_ACCOUNT_SID = os.environ['TWILIO_ACCOUNT_SID']
 TWILIO_AUTH_TOKEN = os.environ['TWILIO_AUTH_TOKEN']
