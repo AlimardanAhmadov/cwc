@@ -67,11 +67,11 @@ class RegisterCoachAPIView(ListCreateAPIView):
                 else:
                     data = []
                     emessage=serializer.errors
-                    print(emessage)
                     for key in emessage:
                         err_message = str(emessage[key]) 
-                        err_string = re.search("string='(.*)', code", err_message)
-                        
+                        print(err_message)
+
+                        err_string = re.search("string=(.*), code", err_message)
                         message_value = err_string.group(1)
                         final_message = f"{key} - {message_value}"
                         data.append(final_message)
