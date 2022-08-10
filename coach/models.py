@@ -213,7 +213,7 @@ def invalidate_service_queryset_cache(sender, instance, **kwargs):
     """
     cache.delete(CACHED_SERVICE_QUERYSET.format(instance.related_coach))
 
-"""@receiver(post_save, sender=Coach)
+@receiver(post_save, sender=Coach)
 def send_sms_verification(sender, instance, *args, **kwargs):
     created = kwargs.get('created')
 
@@ -235,4 +235,4 @@ def send_sms_verification(sender, instance, *args, **kwargs):
                 verification = SMSVerification.objects.create(
                     user=instance.user, phone=instance.user.coach.phone_number
                 )
-                verification.send_confirmation()"""
+                verification.send_confirmation()
