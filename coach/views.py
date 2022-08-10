@@ -58,35 +58,30 @@ class RegisterCoachAPIView(ListCreateAPIView):
     
     @transaction.atomic
     def create(self, request, *args, **kwargs):
-        try:
-            serializer = self.get_serializer(data=request.data)
-            if serializer.is_valid():
-                user = self.perform_create(serializer)
-                if getattr(settings, "REST_USE_JWT", False):
-                    self.token = jwt_encode(user)
-                return JsonResponse(serializer.data, status=status.HTTP_200_OK)
-            else:
-                data = []
-                emessage=serializer.errors 
-                print(emessage)
-                for key in emessage:
-                    err_message = str(emessage[key])
-                    print(err_message)
-                    err_string = re.search("string=(.*), ", err_message) 
-                    message_value = err_string.group(1)
-                    final_message = f"{key} - {message_value}"
-                    data.append(final_message)
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            user = self.perform_create(serializer)
+            if getattr(settings, "REST_USE_JWT", False):
+                self.token = jwt_encode(user)
+            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+        else:
+            data = []
+            emessage=serializer.errors 
+            print(emessage)
+            for key in emessage:
+                err_message = str(emessage[key])
+                print(err_message)
+                err_string = re.search("string=(.*), ", err_message) 
+                message_value = err_string.group(1)
+                final_message = f"{key} - {message_value}"
+                data.append(final_message)
 
-                response = HttpResponse(json.dumps({'error': data}), 
-                    content_type='application/json')
-                response.status_code = 400
-                return response
-        except Exception:
-            response = HttpResponse(json.dumps({'err': ["Something went wrong"]}), 
+            response = HttpResponse(json.dumps({'error': data}), 
                 content_type='application/json')
-            response.status_code = 406
+            response.status_code = 400
             return response
-            
+     
+
     def perform_create(self, serializer):
         user = serializer.save(self.request)
         if getattr(settings, "REST_USE_JWT", False):
@@ -100,7 +95,6 @@ class UpdatePesonalInfoView(ListCreateAPIView):
     renderer_classes = [MyHTMLRenderer,]
     serializer_class = UpdateCoachSerializer
 
-    
     @method_decorator(login_required(login_url='/#login-modal'))
     @sensitive_post_parameters_m
     def dispatch(self, *args, **kwargs):
