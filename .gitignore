@@ -1,5 +1,5 @@
 cwcenv/
-global-bundle.pem
+global-bundle.pem/
 .idea/
 __pycache__/
-db.sqlite3
+db.sqlite3/
