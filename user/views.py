@@ -183,7 +183,7 @@ class RegisterAPIView(ListCreateAPIView):
                 response.status_code = 400
                 return response
         except Exception:
-            response = HttpResponse(json.dumps({'err': "Something went wrong!"}), 
+            response = HttpResponse(json.dumps({'err': ["Something went wrong"]}), 
                 content_type='application/json')
             response.status_code = 406
             return response
