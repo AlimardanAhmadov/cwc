@@ -4,6 +4,8 @@ from django.http import HttpResponse, JsonResponse
 from django.db import transaction
 from django.conf import settings
 from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required 
 from rest_framework import permissions, status
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
@@ -17,7 +19,6 @@ from .serializers import SubscriptionSerializer
 from subscriptions.models import UserSubscription, PlanCost, SubscriptionPlan
 
 from .tasks import create_payment_model, recurring_payment_warning
-
 
 
 paypalrestsdk.configure({
@@ -44,6 +45,10 @@ class PurchaseSubscriptionView(ListCreateAPIView):
     template_name = 'subscription/checkout.html'
     renderer_classes = [MyHTMLRenderer,]
     serializer_class = SubscriptionSerializer
+
+    @method_decorator(login_required(login_url='/#login-modal'))
+    def dispatch(self, *args, **kwargs):
+        return super(PurchaseSubscriptionView, self).dispatch(*args, **kwargs)
 
     def get(self, request, format=None):
         selected_subscription = SubscriptionPlan.objects.filter()[:1].get()
@@ -119,6 +124,7 @@ class PurchaseSubscriptionView(ListCreateAPIView):
                 return response
             
 
+@login_required(login_url='/#login-modal')
 def execute(request):
     with transaction.atomic():
         payment_id = request.session.get("payment_id")
@@ -171,6 +177,11 @@ class CancelUserSubscriptionView(ListCreateAPIView):
     template_name = 'coach/edit_profile.html'
     renderer_classes = [MyHTMLRenderer,]
     serializer_class = SubscriptionSerializer
+
+
+    @method_decorator(login_required(login_url='/#login-modal'))
+    def dispatch(self, *args, **kwargs):
+        return super(CancelUserSubscriptionView, self).dispatch(*args, **kwargs)
 
     def get(self, request, format=None):
         current_user = self.request.user

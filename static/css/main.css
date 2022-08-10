@@ -1522,7 +1522,8 @@ color: black;
 .gallery-item .card {
     border: none;
     text-align: left;
-    width: 375px;
+    /*width: 375px;*/
+    width: 100%;
     height: 466px;
 }
 

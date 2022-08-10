@@ -235,6 +235,8 @@ REST_AUTH_REGISTER_SERIALIZERS = {
 REST_USE_JWT = True
 SITE_ID = 1
 
+LOGIN_REDIRECT_URL = '#login-modal'
+
 # ACCOUNT_EMAIL_VERIFICATION SETTINGS
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_REQUIRED = True
@@ -290,6 +292,14 @@ MEDIAFILES_LOCATION = ''
 MEDIA_ROOT = '/%s/' % MEDIAFILES_LOCATION
 MEDIA_URL = '//%s/' % (AWS_CLOUDFRONT_DOMAIN)
 
+
+"""STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]"""
 DEFAULT_FILE_STORAGE = 'configs.storage_backends.MediaStorage'
 
 django_heroku.settings(locals())
@@ -301,10 +311,3 @@ STATIC_ROOT = '/%s/' % STATICFILES_LOCATION
 
 STATICFILES_STORAGE = 'configs.storage_backends.StaticStorage'
 
-#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-#STATIC_URL = '/static/'
-
-#STATICFILES_DIRS = [
-#    os.path.join(BASE_DIR, 'static')
-#]

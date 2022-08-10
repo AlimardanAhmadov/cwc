@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.conf import settings
 from django.db import transaction
 from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required 
 from django.views.decorators.debug import sensitive_post_parameters
 from rest_auth.utils import jwt_encode 
 from rest_auth.app_settings import JWTSerializer
@@ -101,6 +102,7 @@ class UpdatePesonalInfoView(ListCreateAPIView):
     serializer_class = UpdateCoachSerializer
 
     
+    @method_decorator(login_required(login_url='/#login-modal'))
     @sensitive_post_parameters_m
     def dispatch(self, *args, **kwargs):
         return super(UpdatePesonalInfoView, self).dispatch(*args, **kwargs)
@@ -160,6 +162,11 @@ class AddServiceView(ListCreateAPIView):
     renderer_classes = [MyHTMLRenderer,]
     serializer_class = CreateUpdateServiceSerializer
 
+    @method_decorator(login_required(login_url='/#login-modal'))
+    @sensitive_post_parameters_m
+    def dispatch(self, *args, **kwargs):
+        return super(AddServiceView, self).dispatch(*args, **kwargs)
+
     @transaction.atomic
     def post(self, request, *args, **kwargs):
         with transaction.atomic():
@@ -188,6 +195,10 @@ class UpdateServiceView(ListCreateAPIView):
     renderer_classes = [MyHTMLRenderer,]
     serializer_class = CreateUpdateServiceSerializer
 
+    @method_decorator(login_required(login_url='/#login-modal'))
+    @sensitive_post_parameters_m
+    def dispatch(self, *args, **kwargs):
+        return super(UpdateServiceView, self).dispatch(*args, **kwargs)
 
     def get(self, pk, format=None):
         try:
@@ -239,6 +250,12 @@ class DeleteServiceView(generics.ListCreateAPIView):
     serializer_class = ServiceSerializer
     allowed_methods = ("OPTIONS", "GET", "DELETE")
 
+
+    @method_decorator(login_required(login_url='/#login-modal'))
+    @sensitive_post_parameters_m
+    def dispatch(self, *args, **kwargs):
+        return super(DeleteServiceView, self).dispatch(*args, **kwargs)
+
     def get_object(self, pk):
         try:
             service = get_object_or_404(Service, id=pk)
@@ -267,6 +284,10 @@ class ChangePasswordView(ListCreateAPIView):
     renderer_classes = [MyHTMLRenderer,]
     serializer_class = ChangePasswordSerializer
 
+    @method_decorator(login_required(login_url='/#login-modal'))
+    @sensitive_post_parameters_m
+    def dispatch(self, *args, **kwargs):
+        return super(ChangePasswordView, self).dispatch(*args, **kwargs)
     
     @sensitive_post_parameters_m
     def dispatch(self, *args, **kwargs):

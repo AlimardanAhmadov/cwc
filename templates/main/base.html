@@ -61,6 +61,7 @@
 							</div>
 							<h1 style="text-align: center;">Please Login!</h1>
 							<form id="loginForm">
+								<input type="hidden" name="next" value="{{ request.get_full_path }}" />
 								<div class="form-block">
 									<div class="input-group">
 										<label for="">Username</label>

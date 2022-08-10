@@ -137,7 +137,7 @@ $(document).on('submit', '.verification', function(event){
 		data: JSON.stringify(data),
 		dataType: 'json',
 		headers: { 'X-CSRFTOKEN': csrftoken, "Content-type": "application/json"  },
-		success: function () {
+		success: function (data) {
 			window.location.href = "/#login-modal";
 		},
         error: function (xhr, ajaxOptions, thrownError) {
@@ -702,9 +702,12 @@ $(document).on('submit', '#loginForm', function(event){
 	var input_data = {
 		'username': $('input[name="username"]').val(),
 		'password': $('input[name="password"]').val(),
+		'next': $('input[name="next"]').val(),
 	}
 
 	$('#loginForm .menu-block').html('<div class="loader"></div>').prop('disabled', true);
+
+	console.log($('input[name="next"]').val());
   
 	$.ajax({
 		type: 'POST',
@@ -718,7 +721,13 @@ $(document).on('submit', '#loginForm', function(event){
 			const nextTitle = 'My new page title';
 			const nextState = { additionalInformation: 'Updated the URL with JS' };
   			window.history.pushState(nextState, nextTitle, nextURL);
-			location.reload();
+			if (data['next_url']){
+				console.log(data['next_url']);
+				window.location.href = data['next_url'];
+			}
+			else {
+				location.reload();
+			}
 		},
         error: function (xhr, ajaxOptions, thrownError) {
 			$('#loginForm .menu-block').html('Login').prop('disabled', false);

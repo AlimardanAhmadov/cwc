@@ -26,6 +26,7 @@ from rest_auth.app_settings import JWTSerializer
 from rest_auth.utils import jwt_encode 
 from django.views.decorators.debug import sensitive_post_parameters
 from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required 
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
@@ -63,13 +64,22 @@ class MyHTMLRenderer(TemplateHTMLRenderer):
             context = {"items": context}
         return context
 
+def get_prev_url(request):
+    try:
+        prev_url = request.META.get('HTTP_REFERER')
+        sep = '?next='
+        stripped = prev_url.split(sep, 1)[1]
+    except Exception:
+        stripped = None
+    return stripped
+
 class LoginAPIView(LoginView):
     queryset = ""
     renderer_classes = [MyHTMLRenderer,]
     template_name = "main/base.html"
     allowed_methods = ("POST", "OPTIONS", "HEAD", "GET")
 
-    def get_response(self):
+    def get_response(self, request):
         serializer_class = self.get_response_serializer()
         if getattr(settings, "REST_USE_JWT", False):
             data = {"user": self.user, "token": self.token}
@@ -80,7 +90,14 @@ class LoginAPIView(LoginView):
             serializer = serializer_class(
                 instance=self.token, context={"request": self.request}
             )
-        response = JsonResponse(serializer.data, status=status.HTTP_200_OK)
+        context = {
+            'data': serializer.data,
+            'status': status.HTTP_200_OK,
+        }
+        if get_prev_url(request) is not None:
+            next_url = get_prev_url(request)
+            context['next_url'] = next_url
+        response = JsonResponse(context)
 
         return response
 
@@ -107,7 +124,7 @@ class LoginAPIView(LoginView):
                 content_type='application/json')
             response.status_code = 400
             return response
-        return self.get_response()
+        return self.get_response(request)
 
 
 class RegisterAPIView(ListCreateAPIView):
@@ -308,6 +325,7 @@ class PasswordResetConfirmView(ListCreateAPIView):
     serializer_class = PasswordResetConfirmSerializer
 
     @sensitive_post_parameters_m
+    @method_decorator(login_required(login_url='/#login-modal'))
     def dispatch(self, *args, **kwargs):
         return super(PasswordResetConfirmView, self).dispatch(*args, **kwargs)
     
@@ -349,6 +367,10 @@ class UserProfileAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     template_name = 'coach/edit_profile.html'
     renderer_classes = [TemplateHTMLRenderer]
+    
+    @method_decorator(login_required(login_url='/#login-modal'))
+    def dispatch(self, *args, **kwargs):
+        return super(UserProfileAPIView, self).dispatch(*args, **kwargs)
 
     def get(self, request, username):
         profile = Coach.cached_by_username(username)
@@ -368,6 +390,10 @@ class ProfileAPIView(APIView):
     template_name = 'user/profile_overview.html'
     renderer_classes = [TemplateHTMLRenderer]
 
+    @method_decorator(login_required(login_url='/#login-modal'))
+    def dispatch(self, *args, **kwargs):
+        return super(ProfileAPIView, self).dispatch(*args, **kwargs)
+
     def get(self, request, username):
         profile = Coach.cached_by_username(username)
         related_services = Service.cached_queryset(profile)
@@ -382,6 +408,10 @@ class MyProfileAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     template_name = 'user/profile.html'
     renderer_classes = [TemplateHTMLRenderer]
+
+    @method_decorator(login_required(login_url='/#login-modal'))
+    def dispatch(self, *args, **kwargs):
+        return super(MyProfileAPIView, self).dispatch(*args, **kwargs)
 
     def get(self, request):
         user = self.request.user
@@ -405,6 +435,7 @@ class UpdateProfileAPIView(ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UpdateUserProfileSerializer
     
+    @method_decorator(login_required(login_url='/#login-modal'))
     @sensitive_post_parameters_m
     def dispatch(self, *args, **kwargs):
         return super(UpdateProfileAPIView, self).dispatch(*args, **kwargs)
